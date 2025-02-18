@@ -1,3 +1,13 @@
+function convertDriveUrl(url) {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+  if (match && match[1]) {
+      return `https://drive.google.com/thumbnail?id=${match[1]}`;
+  }
+  return "Invalid URL";
+}
+
+
+
 //Add product
 
 document.getElementById("addmenu-btn").addEventListener("click", function () {
@@ -26,7 +36,7 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
     }
 
     if (!productimage) {
-      productimage = "https://drive.google.com/uc?export=view&id=1wgsqI2dG095AFZZgROfdNygMvvQgfGlI";
+      productimage = "https://drive.google.com/thumbnail?id=10_lbNhWVNNAdXYt6OLCxqK8rJeHzAzCS";
     }
 
     if (isNaN(productPrice) || Number(productPrice) <= 0) {
@@ -251,7 +261,8 @@ document.getElementById("productimage").addEventListener("change", async functio
           successMessage.style.display = "none";
         }, 3000);
         enableButton(submitButton);
-        document.getElementById("imageurl").value = result.url;
+        const thumbnailUrl = convertDriveUrl(result.url);
+        document.getElementById("imageurl").value = thumbnailUrl;
       } else {
         alertMessagered.textContent = `Error: ${result.message || ""}`;
         showError(errorMessage, submitButton);
