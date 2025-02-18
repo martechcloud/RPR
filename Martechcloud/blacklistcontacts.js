@@ -196,6 +196,10 @@ function loadTable() {
                     const index = cart.findIndex(item => item[0] === col1);
                     if (index !== -1) {
                         cart[index][8] = "ENABLED"; // Assuming column 2 holds the status
+                        let currentDate = new Date().toISOString(); // Formats the date as "2025-02-18T12:05:43.942Z"
+
+                        // Set this date in cart[index][9]
+                        cart[index][9] = currentDate;
                         loadTable(); // Reload the table to reflect the changes
                     }
                 } else {

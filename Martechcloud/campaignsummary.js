@@ -139,6 +139,11 @@ function loadTable() {
         const searchText = this.value.toLowerCase();
         filterTableByName(searchText);
     });
+
+    document.getElementById("searchBox2").addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        filterTableByName(searchText);
+    });
 }
 
 function filterTableByDateRange(fromDate, toDate) {

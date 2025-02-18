@@ -9,6 +9,31 @@
 >
   <head>
     <style>
+      #searchInput {
+          padding: 12px 20px;
+          width: 100%;
+          max-width: 300px;
+          margin: 20px auto;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+          outline: none;
+          transition: all 0.3s ease-in-out;
+          
+      }
+
+      /* Focus effect on the search input */
+      #searchInput:focus {
+          border-color: #4CAF50;
+          box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+      }
+
+      /* Styling the placeholder text */
+      #searchInput::placeholder {
+          color: #888;
+          font-style: italic;
+      }
+
       #dataTable th, 
       #dataTable td {
           padding: 30px; /* Increase padding for more height */
@@ -249,6 +274,19 @@
             </div>
 
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                    id="searchInput" 
+                    onkeyup="searchTable()"
+                  />
+                </div>
+              </div>
               
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
@@ -487,13 +525,10 @@
 
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Audience /</span> Contact Master</h4>
-
+              <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Audience /</span> Contact Master
+              </h4>
               <!-- Basic Bootstrap Table -->
-              <div class="mb-3">
-                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search...">
-
-              </div>
               <div class="card">
                 <div class="loader-overlay" id="loader">Loading...</div>
                 <div class="table-responsive text-nowrap">

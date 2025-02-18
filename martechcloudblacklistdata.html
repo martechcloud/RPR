@@ -249,6 +249,19 @@
             </div>
 
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                    id="searchInput" 
+                    onkeyup="searchTable()"
+                  />
+                </div>
+              </div>
               
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
@@ -410,10 +423,6 @@
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Audience /</span> Blacklist Contacts</h4>
 
               <!-- Basic Bootstrap Table -->
-              <div class="mb-3">
-                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search...">
-
-              </div>
               <div class="card">
                 <div class="loader-overlay" id="loader">Loading...</div>
                 <div class="table-responsive text-nowrap">
