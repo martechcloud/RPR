@@ -77,27 +77,43 @@ function loadTable() {
         const newRow = document.createElement('tr');
 
         // Select only specific columns (e.g., second, third, and fourth column)
-        const selectedIndexes = [0, 2, 3, 8, 9]; // Modify to select different columns
+        let selectedIndexes = [0, 2, 3, 8, 9]; // Modify to select different columns 
 
         selectedIndexes.forEach((index, i) => {
             if (index < rowData.length) {
                 const newCell = document.createElement('td');
 
-                // If the second selected column (index 2 in cart) contains "ENABLED", add the Active badge
+                // If the third selected column (index 3 in selectedIndexes) contains "ENABLED", add the Active badge
                 if (i === 3) { 
                     if (rowData[index] === "ENABLED") {
                         newCell.innerHTML = '<span class="badge bg-label-primary me-1">ACTIVE</span>';
                     } else {
                         newCell.innerHTML = '<span class="badge bg-label-warning me-1">BLACKLISTED</span>';
                     }
+                } else if (i === 4) { // If the fifth column (index 4) contains a date, format it
+                    const date = new Date(rowData[index]); // Convert string to Date object
+
+                    const options = {
+                        weekday: 'short', // 'Mon'
+                        year: 'numeric',
+                        month: 'short', // 'Feb'
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true, // 12-hour format
+                    };
+
+                    const istTime = date.toLocaleString('en-IN', options); // Converts to IST in 12-hour format
+
+                    const formattedTime = istTime.replace(',', '').replace(' AM', 'AM').replace(' PM', 'PM');
+                    newCell.innerHTML = formattedTime; // Set formatted time
                 } else {
-                    newCell.textContent = rowData[index];
+                    newCell.textContent = rowData[index]; // Set other columns normally
                 }
 
                 newRow.appendChild(newCell);
             }
         });
-
         // Create Blacklist button
         const blacklistCell = document.createElement('td');
         const blacklistButton = document.createElement('button');
@@ -129,6 +145,10 @@ function loadTable() {
                     const index = cart.findIndex(item => item[0] === col1);
                     if (index !== -1) {
                         cart[index][8] = "BLACKLISTED"; // Assuming column 2 holds the status
+                        let currentDate = new Date().toISOString(); // Formats the date as "2025-02-18T12:05:43.942Z"
+
+                        // Set this date in cart[index][9]
+                        cart[index][9] = currentDate;
                         loadTable(); // Reload the table to reflect the changes
                     }
                 } else {
@@ -251,171 +271,3 @@ function searchTable() {
 }
 
 
-// Function to disable the submit button with feedback
-function disableButton(button) {
-    button.style.backgroundColor = "lightgrey";
-    button.style.border = "lightgrey";
-    button.disabled = true;
-}
-  
-// Function to reset the submit button's state
-function resetSubmitButton(button) {
-    button.style.backgroundColor = "";
-    button.style.border = "";
-    button.disabled = false;
-}
-
-// Function to show error message and re-enable the button
-function showError(errorMessage, button) {
-    errorMessage.style.display = "block";
-    setTimeout(() => {
-    errorMessage.style.display = "none";
-    }, 3000);
-    resetSubmitButton(button);
-}
-
-document.getElementById('editButton').addEventListener('click', async function () {
-    const submitButton = document.getElementById("editButton");
-    disableButton(submitButton);
-    const errorMessage = document.getElementById('box2');
-    const successMessage = document.getElementById('box');
-    const alertMessage = document.getElementById('almessage');
-    const alertMessagered = document.getElementById('almessage');
-
-    // Capture form data
-    const CUSTOMER_ID = document.getElementById('CUSTOMER_ID').value;    
-    const CUSTOMER_NAME = document.getElementById('CUSTOMER_NAME').value; 
-    const EMAIL = document.getElementById('EMAIL').value; 
-    const PHONE = document.getElementById('PHONE').value; 
-    const REGISTRATION_DATE = document.getElementById('REGISTRATION_DATE').value;
-
-    if (PHONE !== "") {
-        var phonePattern = /^[0-9]{12}$/;
-        if (!phonePattern.test(PHONE)) {
-            document.getElementById('almessage').innerHTML = "Phone Number is not valid!";
-            var box2 = document.getElementById("box2");
-            box2.style.display = "inline-block";
-            resetSubmitButton(submitButton);
-            setTimeout(function () {
-                box2.style.display = "none";
-            }, 3000);
-            return;
-        }
-    }
-
-    if (EMAIL !== "") {
-        var re = /\S+@\S+\.\S+/;
-        if (!re.test(EMAIL)) {
-            document.getElementById('almessage').innerHTML = "Email is not valid!"
-            var box2 = document.getElementById("box2");
-                box2.style.display = "inline-block";
-                resetSubmitButton(submitButton);
-                setTimeout(function () {
-                    box2.style.display = "none";
-                }, 3000);
-            return;
-        }
-    }
-
-    // Construct the URL for the Apps Script web app (replace with your actual web app URL)
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
-
-    // Append all the captured data as query parameters
-    url.searchParams.append("usecase", "editcontact");
-    url.searchParams.append("CUSTOMER_ID", CUSTOMER_ID);
-    url.searchParams.append("CUSTOMER_NAME", CUSTOMER_NAME);
-    url.searchParams.append("EMAIL", EMAIL);
-    url.searchParams.append("PHONE", PHONE);
-    url.searchParams.append("REGISTRATION_DATE", REGISTRATION_DATE);
-
-    try {
-        // Make the API call
-        const response = await fetch(url);
-        const data = await response.json();
-        handleResponse1(data, submitButton);
-      } catch (error) {
-        alertMessagered.textContent = "An unexpected error occurred. Please try again.";
-        showError(errorMessage, submitButton);
-      }
-    });
-
-    // Function to handle the server response
-  function handleResponse1(response, submitButton) {
-    const successMessage = document.getElementById('box');
-    const alertMessagegreen = document.getElementById('success');
-    const alertMessagered = document.getElementById('almessage');
-    const errorMessage = document.getElementById('box2');
-
-    if (response.status === "success") {
-        const CUSTOMER_ID = document.getElementById('CUSTOMER_ID').value;    
-        const CUSTOMER_NAME = document.getElementById('CUSTOMER_NAME').value; 
-        const EMAIL = document.getElementById('EMAIL').value; 
-        const PHONE = document.getElementById('PHONE').value; 
-        const REGISTRATION_DATE = document.getElementById('REGISTRATION_DATE').value;
-
-      // Update cart with new values
-        const index = cart.findIndex(row => row[0] === CUSTOMER_ID);
-        console.log(CUSTOMER_ID)
-        console.log(index)
-        if (index !== -1) {
-            cart[index] = [CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE, '', REGISTRATION_DATE];
-            loadTable(); // Refresh table after update
-        }
-
-        loadTable();
-        alertMessagegreen.textContent = "Contact Updated!";
-        $('#largeModal').modal('hide');
-        successMessage.style.display = "block";
-        setTimeout(() => {
-            successMessage.style.display = "none";
-        }, 3000);
-
-    } else {
-      alertMessagered.textContent = response.message || "Failed! Please try again.";
-      showError(errorMessage, submitButton);
-    }
-
-    // Enable the submit button
-    resetSubmitButton(submitButton);
-  }
-
-
-function validatePhoneNumber(input) {
-    let value = input.value.trim();
-
-    // Validate phone number after +91
-    const phoneRegex = /^\d{12}$/;
-    const phoneError = document.getElementById('phoneError');
-
-    if (!phoneRegex.test(value)) {
-        phoneError.style.display = 'block';
-        input.classList.remove("is-valid");
-        input.classList.add("is-invalid");
-    } else {
-        phoneError.style.display = 'none';
-        input.classList.remove("is-invalid");
-        input.classList.add("is-valid");
-    }
-
-    input.value = value; // Update the input value with +91
-}
-  
-  
-  
-function validateemail(input) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation regex
-    const emailError = document.getElementById("emailError");
-
-    if (emailPattern.test(input.value)) {
-        emailError.style.display = "none";
-        input.classList.remove("is-invalid");
-        input.classList.add("is-valid");
-    } else {
-        emailError.style.display = "block";
-        input.classList.remove("is-valid");
-        input.classList.add("is-invalid");
-    }
-}
-
-
-    

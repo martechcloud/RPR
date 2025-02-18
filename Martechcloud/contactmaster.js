@@ -41,9 +41,28 @@ function loadTable() {
 
         // Extract only the first 5 columns
         const firstFiveColumns = rowData.slice(0, 5);
-        const [customerid, customername, customeremail, customerphone, registrationdate] = firstFiveColumns;
+        let [customerid, customername, customeremail, customerphone, registrationdate] = firstFiveColumns;
 
-        firstFiveColumns.forEach(cellData => {
+        // Convert UTC timestamp to IST (Indian Standard Time)
+        const date = new Date(registrationdate); // Convert string to Date object
+        const options = {
+            weekday: 'short', // 'Mon'
+            year: 'numeric',
+            month: 'short', // 'Feb'
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // 12-hour format
+        };
+
+        const istTime = date.toLocaleString('en-IN', options); // Converts to IST in 12-hour format
+
+        // Format the time to match the desired format: "Feb 10, 2025 05:30 PM"
+        const formattedTime  = istTime.replace(',', '').replace(' AM', 'AM').replace(' PM', 'PM');
+
+        let updatedColumns = [customerid, customername, customeremail, customerphone, formattedTime];
+
+        updatedColumns.forEach(cellData => {
             const newCell = document.createElement('td');
             newCell.textContent = cellData;
             newRow.appendChild(newCell);
@@ -56,7 +75,7 @@ function loadTable() {
                     <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="openModal('${customerid}','${customername}', '${customeremail}','${customerphone}', '${registrationdate}')">
+                    <a class="dropdown-item" href="#" onclick="openModal('${customerid}','${customername}', '${customeremail}','${customerphone}', '${formattedTime}')">
                         <i class="bx bx-pencil me-1"></i> Edit
                     </a>
                 </div>

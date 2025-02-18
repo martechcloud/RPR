@@ -53,111 +53,132 @@ async function organizeItems() {
     });
 }
 
-// Display items dynamically from the loaded data
 async function showItems(category) {
-    if (Object.keys(items).length === 0) {
-        await organizeItems(); // Ensure items are loaded before displaying
-    }
+  if (Object.keys(items).length === 0) {
+      await organizeItems(); // Ensure items are loaded before displaying
+  }
 
-    const menuItemsDiv = document.getElementById('menu-items');
-    menuItemsDiv.innerHTML = '';
+  const menuItemsDiv = document.getElementById('menu-items');
+  menuItemsDiv.innerHTML = '';
 
-    // Display items in the selected category
-    if (items[category]) {
-        items[category].forEach((item, index) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'menu-item1';
-            itemDiv.onclick = () => addToCart(category, index);
-            console.log(item.image)
-            itemDiv.innerHTML = `
-                <div style="
-                    position: relative;
-                    width: 100%;
-                    height: 100px;
-                    background-image: url(${item.image});
-                    background-size: cover;
-                    background-position: center;
-                    border-radius: 8px;
-                    overflow: hidden;
-                ">
-                    <div style="
-                        position: absolute;
-                        bottom: 0;
-                        width: 100%;
-                        background: rgba(0, 0, 0, 0.6);
-                        color: #fff;
-                        text-align: center;
-                        padding: 10px 0;
-                        font-size: 16px;
-                        font-weight: bold;
-                    ">
-                        ${item.name}
-                    </div>
-                </div>
-            `;
-            // <p class="card-text" style="color: #555; font-size: 1rem;">Price: ₹${item.price.toFixed(2)}</p>
-            menuItemsDiv.appendChild(itemDiv);
-        });
-    } else {
-        menuItemsDiv.innerHTML = `<p>No items available for this category.</p>`;
-    }
+  // If category is empty, show all items except "home"
+  if (category === "") {
+    Object.keys(items).forEach(cat => {
+        if (cat !== "home") { // Exclude the "home" category
+            items[cat].forEach((item, index) => {
+                createMenuItem(item, cat, index, menuItemsDiv);
+            });
+        }
+    });
+  }
+  // Display items in the selected category
+  else if (items[category]) {
+      items[category].forEach((item, index) => {
+          createMenuItem(item, category, index, menuItemsDiv);
+      });
+  } else {
+      menuItemsDiv.innerHTML = `<p>No items available for this category.</p>`;
+  }
+}
+
+// Helper function to create a menu item div
+function createMenuItem(item, category, index, container) {
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'menu-item1';
+  itemDiv.onclick = () => addToCart(category, index);
+  
+  itemDiv.innerHTML = `
+      <div style="
+          position: relative;
+          width: 100%;
+          height: 100px;
+          background-image: url(${item.image});
+          background-size: cover;
+          background-position: center;
+          border-radius: 8px;
+          overflow: hidden;
+      ">
+          <div style="
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              background: rgba(0, 0, 0, 0.6);
+              color: #fff;
+              text-align: center;
+              padding: 10px 0;
+              font-size: 16px;
+              font-weight: bold;
+          ">
+              ${item.name}
+          </div>
+      </div>
+  `;
+
+  container.appendChild(itemDiv);
 }
 
 
-// Search items based on the user's input
+// Search only items in the "home" category
 async function searchItems() {
-    const query = document.getElementById('search-bar').value.toLowerCase();
-    const menuItemsDiv = document.getElementById('menu-items');
-    menuItemsDiv.innerHTML = '';
+  const query = document.getElementById('search-bar').value.toLowerCase().trim();
+  const menuItemsDiv = document.getElementById('menu-items');
+  menuItemsDiv.innerHTML = '';
 
-    if (Object.keys(items).length === 0) {
-        await organizeItems(); // Ensure items are loaded before searching
-    }
+  if (!query) {
+      showItems(''); // Show all items in the "home" category when input is empty
+      return;
+  }
 
-    let foundItems = false;
+  if (Object.keys(items).length === 0) {
+      await organizeItems(); // Ensure items are loaded before searching
+  }
 
-    for (const category in items) {
-        items[category].forEach((item, index) => {
-            if (item.name.toLowerCase().includes(query)) {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'menu-item1';
-                itemDiv.onclick = () => addToCart(category, index);
-                itemDiv.innerHTML = `
-                    <div style="
-                        position: relative;
-                        width: 100%;
-                        height: 100px;
-                        background-image: url(${item.image});
-                        background-size: cover;
-                        background-position: center;
-                        border-radius: 8px;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            position: absolute;
-                            bottom: 0;
-                            width: 100%;
-                            background: rgba(0, 0, 0, 0.6);
-                            color: #fff;
-                            text-align: center;
-                            padding: 10px 0;
-                            font-size: 16px;
-                            font-weight: bold;
-                        ">
-                            ${item.name}
-                        </div>
-                    </div>
-                `;
-                menuItemsDiv.appendChild(itemDiv);
-                foundItems = true;
-            }
-        });
-    }
+  let foundItems = false;
 
-    if (!foundItems) {
-        menuItemsDiv.innerHTML = '<p>No items found.</p>';
-    }
+  // Search only within the "home" category
+  if (items["home"]) {
+      items["home"].forEach((item, index) => {
+          if (item.name.toLowerCase().includes(query)) {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'menu-item1';
+              itemDiv.onclick = () => addToCart("home", index);
+              itemDiv.innerHTML = `
+                  <div style="
+                      position: relative;
+                      width: 100%;
+                      height: 100px;
+                      background-image: url(${item.image});
+                      background-size: cover;
+                      background-position: center;
+                      border-radius: 8px;
+                      overflow: hidden;
+                  ">
+                      <div style="
+                          position: absolute;
+                          bottom: 0;
+                          width: 100%;
+                          background: rgba(0, 0, 0, 0.6);
+                          color: #fff;
+                          text-align: center;
+                          padding: 10px 0;
+                          font-size: 16px;
+                          font-weight: bold;
+                      ">
+                          ${item.name}
+                      </div>
+                  </div>
+              `;
+              menuItemsDiv.appendChild(itemDiv);
+              foundItems = true;
+          }
+      });
+  }
+
+  if (!foundItems) {
+      menuItemsDiv.innerHTML = '<p>No items found.</p>';
+  }
 }
+
 
 // Add item to the cart
 function addToCart(category, index) {
@@ -272,7 +293,7 @@ function changeQuantity(itemName, delta) {
 window.onload = async function() {
     showSpinner(); // Show spinner while data is loading
     await organizeItems(); // Fetch and organize items only once
-    showItems('home');
+    showItems('');
     hideSpinner(); // Hide the spinner once data is loaded
     console.log('Items are now ready for selection.');
     checkSessionElements()
@@ -461,7 +482,7 @@ function setActive(element) {
     console.log(tableData)
     if (tableData) {
         resetBilling();
-        showItems('home');
+        showItems('');
         const billingData = JSON.parse(tableData);
 
         billingData.items.forEach((item) => {
@@ -531,7 +552,7 @@ document.getElementById("refreshmenu-btn").addEventListener("click", async () =>
       await organizeItems(); 
 
       // Display the items on the page (assuming 'home' is a valid category or section)
-      showItems('home');
+      showItems('');
 
       // Check session elements (assuming the function checks session state or similar)
       checkSessionElements();
