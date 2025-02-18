@@ -1,0 +1,143 @@
+
+/**
+ * Contact Master
+ */
+
+
+
+'use strict';
+
+
+
+let cart = [];
+
+function fetchDataAndStoreInCart() {
+    const loaderContainer = document.getElementById("loader"); 
+    loaderContainer.style.display = "flex"; // Show loading spinner
+
+    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=SEGMENTS")
+        .then(response => response.json())
+        .then(data => {
+            cart = data.slice(1); // Store data in cart, skipping header row
+            loadTable(); // Call loadTable to update UI
+        })
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => {
+            loaderContainer.style.display = "none"; // Hide spinner
+        });
+}
+
+
+
+function loadTable() {
+    console.log("Loaded");
+    var dataTable = document.getElementById("dataTable");
+    dataTable.getElementsByTagName('thead')[0].innerHTML = `
+        <tr>
+            <th>Segment Name</th>
+            <th>Refreshed On</th>
+            <th class="text-center">User count</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">SMS</th>
+            <th>Actions</th>
+        </tr>
+    `;
+
+    const tableBody = document.querySelector('#dataTable tbody');
+    tableBody.innerHTML = ''; // Clear previous data
+
+    cart.forEach(rowData => {
+        const newRow = document.createElement('tr');
+
+        // Extract only the first 6 columns
+        const [segmentname, segmentinfo, refreshedon, usercount, email, sms] = rowData.slice(0, 6);
+
+        // Convert UTC timestamp to IST (Indian Standard Time)
+        const date = new Date(refreshedon); // Convert string to Date object
+        const options = {
+            weekday: 'short', // 'Mon'
+            year: 'numeric',
+            month: 'short', // 'Feb'
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // 12-hour format
+        };
+
+        const istTime = date.toLocaleString('en-IN', options); // Converts to IST in 12-hour format
+
+        // Format the time to match the desired format: "Feb 10, 2025 05:30 PM"
+        const formattedTime = istTime.replace(',', '').replace(' AM', 'AM').replace(' PM', 'PM');
+
+        // Create Segment Name cell with Info icon
+        const segmentCell = document.createElement('td');
+        segmentCell.innerHTML = `
+            ${segmentname} 
+            <i class="bx bx-info-circle text-info info-icon" style="cursor: pointer; margin-left: 5px;" 
+                data-bs-toggle="tooltip" data-bs-placement="top" title="${segmentinfo}"></i>
+        `;
+        newRow.appendChild(segmentCell);
+
+        // Create refreshed date cell
+        const refreshedCell = document.createElement('td');
+        refreshedCell.textContent = formattedTime;
+        newRow.appendChild(refreshedCell);
+
+        // Apply Bootstrap primary color and center alignment to usercount, email, and sms
+        [usercount, email, sms].forEach(cellData => {
+            const newCell = document.createElement('td');
+            newCell.innerHTML = `<span class="text-primary fw-bold">${cellData}</span>`;
+            newCell.classList.add("text-center"); // Center align the text
+            newRow.appendChild(newCell);
+        });
+
+        // Actions Dropdown
+        const actionsCell = document.createElement('td');
+        actionsCell.innerHTML = `
+            <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="martechcloudcampaign.html" onclick="">
+                        <i class="bx bxl-whatsapp me-1"></i> WhatsApp Campaign
+                    </a>
+                </div>
+            </div>
+        `;
+        newRow.appendChild(actionsCell);
+        tableBody.appendChild(newRow);
+    });
+
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+
+document.getElementById('refreshButton').addEventListener('click', function() {
+    fetchDataAndStoreInCart(); // Call your loadtable function when the button is clicked
+  });
+
+
+
+
+
+// Search function
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#dataTable tbody tr');
+
+    rows.forEach(row => {
+        const segmentName = row.querySelector('td').textContent.toLowerCase();
+        if (segmentName.includes(searchTerm)) {
+            row.style.display = ''; // Show row if it matches search term
+        } else {
+            row.style.display = 'none'; // Hide row if it does not match search term
+        }
+    });
+});
+
+    

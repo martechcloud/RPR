@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Frame</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+            margin: 0;
+            flex-wrap: wrap; /* Allows horizontal wrapping of phones */
+            gap: 20px; /* Adds spacing between phones */
+        }
+        .iphone {
+            width: 225px;
+            height: 450px;
+            background-color: #000;
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .screen {
+            width: 210px;
+            height: 435px;
+            background-color: #e5ddd5;
+            border-radius: 22px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            font-family: Arial, sans-serif;
+            overflow-y: auto; /* Enables vertical scrolling */
+            overflow-x: hidden; /* Hides horizontal scroll */
+            scrollbar-width: none; /* Hides scrollbar in Firefox */
+        }
+
+        /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+        .screen::-webkit-scrollbar {
+            display: none; /* Completely hides scrollbar */
+        }
+
+
+        .notch {
+            width: 105px;
+            height: 22px;
+            background-color: #000;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom-left-radius: 11px;
+            border-bottom-right-radius: 11px;
+        }
+
+        .header {
+            width: 93%;
+            height: 22px;
+            background-color: #075e54;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            border-top-left-radius: 22px;
+            border-top-right-radius: 22px;
+            position: absolute;
+            top: 0;
+        }
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 8px;
+            margin-top: 40px;
+        }
+        .incoming-message {
+            width: 90%;
+            background-color: #ffffff;
+            padding: 8px;
+            border-radius: 8px;
+            margin-top: 8px;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .cta-container {
+            width: 93%;
+            height: 40px;
+            border-radius: 8px;
+            margin-top: 0px;
+            border-top: 1px solid #ccc;
+        }
+        .cta-link {
+            display: block;
+            width: 86%;
+            background-color: #ffffff;
+            color: #075e54;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 0;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        const data = [
+            ["Order Update", "Transactional", "English", "Text", "Order Update", "Hey there,\n\n🎉✨More Gold = More Celebrations ✨🎉\nWith the festive season here, it’s time to cash in on a golden chance to grow your ABCD Coins! 🪙  \n\nEarn FLAT 1% back* in ABCD Coins on your first purchase of Digital Gold during this campaign period. \n\n😇 Make the most of our smart pricing and hassle-free storage! \n\nOnly 1 day left - Grab this golden chance to elevate your festive joy!\n\n[Min transaction value: ₹5000; Max 1000 ABCD Coins to be earned; Campaign Period: 21st Oct to 4th Nov]\n\n*T&C Apply\n\nRegards,\nAditya Birla Capital Digital.", "", 1, "", "Quick Reply", "Track Order", "Support", "Support 2", "{{1}} = Order ID", "#12345", ""],
+            ["Order Update", "Transactional", "Hindi", "Text", "ऑर्डर अपडेट", "आपका ऑर्डर {{1}} भेज दिया गया है", "धन्यवाद!", 1, "", "Quick Reply", "ट्रैक करें", "सहायता", "", "{{1}} = Order ID", "#12345", ""],
+            ["Promo Offer", "Promotional", "English", "Image", "https://drive.google.com/file/d/1W8GzRHHTilOPsH/preview", "Hi {{1}}, enjoy 20% off!", "Offer valid till {{2}}", 1, "", "Call-to-Action", "Visit Website", "Call Support", "-", "{{1}} = Name, {{2}} = Date", "John, 10 Oct", ""],
+            ["Payment Reminder", "Transactional", "English", "None", "", "Dear {{1}}, your payment of ₹{{2}} is due", "Pay now to avoid late fees", 1, "", "Quick Reply", "Pay Now", "Contact Support", "", "{{1}} = Name, {{2}} = Amount", "Sahil, 500", ""],
+            ["Feedback Request", "Service", "English", "None", "", "Hi {{1}}, how was your experience?", "Your feedback helps us improve", 1, "", "Quick Reply", "Rate Now", "Talk to Support", "", "{{1}} = Name", "Sahil", ""],
+            ["Appointment Confirmation", "Service", "English", "Document", "", "Hi {{1}}, your appointment is confirmed", "See attached details", 1, "", "Call-to-Action", "View Details", "Reschedule", "", "{{1}} = Name", "Sahil", ""]
+        ];
+    
+        // Function to create the HTML content for each iPhone frame
+        function createIphone(data) {
+            let headerContent = "";
+            let buttonHTML = "";
+
+            // Handle different types of content for the header (Text, Image, Video, Document)
+            if (data[3] === "Text") {
+                headerContent = `<span style="font-weight: bold; color: grey;">${data[4]}</span>`;
+            } else if (data[3] === "Image" && data[4]) {
+                headerContent = `<img src="${data[4]}" alt="Header Image" style="width: 100%; height: auto;">`;
+            } else if (data[3] === "Video" && data[4]) {
+                headerContent = `<video width="100%" controls><source src="${data[4]}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            } else if (data[3] === "Document" && data[4]) {
+                headerContent = `<a href="${data[4]}" target="_blank" style="font-weight: bold; color: grey;">View Document</a>`;
+            }
+
+            // Handle quick reply or call-to-action buttons
+            if (data[9] === "Quick Reply" || data[9] === "Call-to-Action") {
+                for (let i = 10; i <= 12; i++) {
+                    if (data[i] !== "") {
+                        buttonHTML += `<a href="#" class="cta-link" style="display: block; padding: 10px; text-decoration: none; border: 1px solid #dcdcdc;">${data[9] === "Call-to-Action" ? "🌎" : "◀️"} ${data[i]}</a>`;
+                    }
+                }
+            }
+
+            // Handle the incoming message text, replacing \n with <br/>
+            const messageContent = data[5].replace(/\n/g, '<br/>'); // Replacing \n with <br/> for line breaks
+
+            return `
+            <div class="template-container" style="background-color: white; padding: 15px; margin: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <h3 style="text-align: center; color: #333;">${data[0]}</h3>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="header"></div>
+                        <div class="chat-container">
+                            <div class="message-wrapper" style="display: flex; flex-direction: column; gap: 4px;">
+                                <div class="incoming-message">
+                                    ${headerContent ? `${headerContent}<br/>` : ''}
+                                    ${headerContent ? `<br/>` : ''}
+                                    <span>${messageContent}</span>
+                                    <div class="footer" style="font-size: 8px; text-align: left; color: grey; margin-top: 10px;">
+                                        From Martech Cloud
+                                    </div>
+                                </div>
+                                <div class="button-group" style="display: flex; flex-direction: column; gap: 0px;">
+                                    ${buttonHTML}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notch"></div>
+                    <div class="button"></div>
+                </div>
+            </div>`;
+        }
+
+        const container = document.body;
+        data.forEach(item => {
+            const iphoneHTML = createIphone(item);
+            container.insertAdjacentHTML('beforeend', iphoneHTML);
+        });
+
+    </script>
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>
