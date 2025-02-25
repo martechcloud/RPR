@@ -1,86 +1,110 @@
-function login() {
-    var submitButton = document.getElementById('submitbutton')
-    submitButton.style.backgroundColor = 'lightgrey';
-    submitButton.style.border = '1px solid lightgrey';
-    submitButton.disabled = true;
+async function login() {
+    const submitButton = document.getElementById('submitbutton');
+    const alertBox = document.getElementById("alert");
+    const alertMessage = document.getElementById('alertmessage');
+    const username = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const rememberMe = document.getElementById('remember-me');
 
-    var username = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-    
-    // Generate a random key
-    var key = Math.random().toString(36).substr(2, 10);
-    // Store the key in sessionStorage
-    sessionStorage.setItem("Username", username);
-    sessionStorage.setItem("Password", password);
-    sessionStorage.setItem("key", key);
+    // Disable button and update UI
+    updateButtonState(submitButton, true);
 
-    // Fetch IP address
-    fetch('https://api.ipify.org?format=json')
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(ipData) {
-            var ipAddress = ipData.ip;
+    try {
+        // Generate a random key
+        const key = Math.random().toString(36).substr(2, 10);
 
-            var formData = new FormData();
-            var password = document.getElementById("password").value;
-            formData.append("username", username);
-            formData.append("password", password);
-            formData.append("key", key);
-            formData.append("ipAddress", ipAddress);
+        // Store credentials temporarily
+        sessionStorage.setItem("Username", username);
+        sessionStorage.setItem("Password", password);
+        sessionStorage.setItem("key", key);
 
-            function decryptURL(encryptedUrl, password) {
-                var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
-                return decrypted;
-            }
-            var encryptedUrl = "U2FsdGVkX19ke6xFKSff23W24Anb7XgAuMALMZQBVVp294uePNPgPhjiwQDDw0jD2+xetILnGVPt+hHJv9UFWV1TKvCt8/xDq0N06udwbHVj6kceUIvFbx8VrEJMD2cYgObPnHJaY4JDUMFvYLZIg9DCv4CO3EWnd/F4KdaLb/7f/Ai/M0LlyALi6uTvjooY";
-            var password = 'secret';
-            var decryptedUrl = decryptURL(encryptedUrl, password);
+        // Fetch IP address
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const { ip: ipAddress } = await ipResponse.json();
 
-            fetch(decryptedUrl, {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    if (data.redirectUrl === "IP Address not found") {
-                        var box = document.getElementById("alert");
-                        document.getElementById('alertmessage').innerHTML = "IP address is not on the whitelist!";
-                        box.style.display = "inline-block";
-                        submitButton.style.backgroundColor = '';
-                        submitButton.style.border = '';
-                        submitButton.disabled = false;
-                        setTimeout(function() {
-                            box.style.display = "none";
-                            window.location.href = "martechcloudipwhitelisting.html";
-                        }, 3000); 
-                    } else if (data.redirectUrl === "Invalid username or password") {
-                        var box = document.getElementById("alert");
-                        box.style.display = "inline-block";
-                        submitButton.style.backgroundColor = '';
-                        submitButton.style.border = '';
-                        submitButton.disabled = false;
-                        setTimeout(function() {
-                            box.style.display = "none";
-                        }, 3000);
-                    } else {
-                        var checkbox = document.getElementById('remember-me');
-                        if (checkbox.checked) {
-                            localStorage.setItem('MartechUsername', username);
-                        }
-                        submitButton.style.backgroundColor = '';
-                        submitButton.style.border = '';
-                        submitButton.disabled = false;
-                        window.location.href = data.redirectUrl;
-                    }
-                })
-                .catch(function(error) {
-                    console.error("Error:", error);
-                });
-        })
-        .catch(function(error) {
-            console.error("Error fetching IP:", error);
-        });
+        // Prepare form data
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+        formData.append("key", key);
+        formData.append("ipAddress", ipAddress);
+
+        // Decrypt URL
+        const encryptedUrl = "U2FsdGVkX19ke6xFKSff23W24Anb7XgAuMALMZQBVVp294uePNPgPhjiwQDDw0jD2+xetILnGVPt+hHJv9UFWV1TKvCt8/xDq0N06udwbHVj6kceUIvFbx8VrEJMD2cYgObPnHJaY4JDUMFvYLZIg9DCv4CO3EWnd/F4KdaLb/7f/Ai/M0LlyALi6uTvjooY";
+        const decryptedUrl = decryptURL(encryptedUrl, 'secret');
+
+        // Authenticate user
+        const response = await fetch(decryptedUrl, { method: "POST", body: formData });
+        const data = await response.json();
+
+        handleLoginResponse(data, username, password, ipAddress, submitButton, alertBox, alertMessage, rememberMe);
+    } catch (error) {
+        console.error("Error:", error);
+        alertMessage.innerHTML = "An error occurred. Please try again.";
+        alertBox.style.display = "inline-block";
+    } finally {
+        // Restore button state
+        updateButtonState(submitButton, false);
+    }
+}
+
+// Function to decrypt URL
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}
+
+// Function to handle login response
+function handleLoginResponse(data, username, password, ipAddress, submitButton, alertBox, alertMessage, rememberMe) {
+    if (data.redirectUrl === "IP Address not found") {
+        loaderOverlay.style.opacity = "0";
+        loaderOverlay.style.visibility = "hidden";
+        alertMessage.innerHTML = "IP address is not on the whitelist!";
+        alertBox.style.display = "inline-block";
+        setTimeout(() => {
+            alertBox.style.display = "none";
+            window.location.href = "martechcloudipwhitelisting.html";
+        }, 3000);
+    } else if (data.redirectUrl === "Invalid username or password") {
+        loaderOverlay.style.opacity = "0";
+        loaderOverlay.style.visibility = "hidden";
+        alertMessage.innerHTML = "Invalid username or password!";
+        alertBox.style.display = "inline-block";
+        setTimeout(() => {
+            alertBox.style.display = "none";
+        }, 3000);
+    } else {
+        // Remember user credentials if checked
+        if (rememberMe.checked) {
+            localStorage.setItem('MartechUsername', username);
+            localStorage.setItem('MartechPassword', password);
+        }
+
+        // Store user session data
+        const userData = {
+            MartechUsername: username,
+            MartechIP: ipAddress,
+            MartechRole: data.role,
+            MartechFirstName: data.firstname,
+            MartechLastName: data.lastname,
+            MartechEmail: data.email,
+            MartechPhone: data.phone,
+            MartechName: data.name,
+        };
+        Object.entries(userData).forEach(([key, value]) => sessionStorage.setItem(key, value));
+
+        const loaderOverlay = document.getElementById("loaderOverlay");
+
+        loaderOverlay.style.opacity = "0";
+        loaderOverlay.style.visibility = "hidden";
+
+        // Redirect to the given URL
+        window.location.href = data.redirectUrl;
+    }
+}
+
+// Function to update button state
+function updateButtonState(button, disable) {
+    button.style.backgroundColor = disable ? 'lightgrey' : '';
+    button.style.border = disable ? '1px solid lightgrey' : '';
+    button.disabled = disable;
 }
