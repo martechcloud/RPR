@@ -113,6 +113,23 @@ function campaignsummary_cart1() {
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
+            order_cart();
+        });
+}
+
+
+let order_cart1 = [];
+
+function order_cart() {
+    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=ORDER_DATA_TABLE")
+        .then(response => response.json())
+        .then(data => {
+            order_cart1 = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('order_cart', JSON.stringify(order_cart1));
+            console.log(order_cart1)
+        })
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => {
             login();
         });
 }

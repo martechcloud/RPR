@@ -930,6 +930,8 @@ document.getElementById('submitorder').addEventListener('click', async function 
     let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || [];
     let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
     let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
+    let orderCart = JSON.parse(sessionStorage.getItem('order_cart')) || [];
+    let subtotal = document.getElementById('subtotal').innerText;
     let pn = document.getElementById('phoneSmall').value;
     let cn = document.getElementById('nameSmall').value;
     let ce = document.getElementById('emailSmall').value;
@@ -959,6 +961,15 @@ document.getElementById('submitorder').addEventListener('click', async function 
           new Date().toISOString(), // Adding timestamp
       ];
 
+      const newRow3 = [
+        randomkey,
+        "",
+        new Date().toISOString(),
+        "",
+        "",
+        subtotal,
+      ];
+
       contactmaster_cart.unshift(newRow);
       sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
 
@@ -968,6 +979,20 @@ document.getElementById('submitorder').addEventListener('click', async function 
       blacklist_cart.unshift(newRow2);
       sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
 
+      orderCart.unshift(newRow3);
+      sessionStorage.setItem('order_cart', JSON.stringify(orderCart));
+
+    } else {
+      const newRow = [
+        randomkey,
+        "",
+        new Date().toISOString(),
+        "",
+        "",
+        subtotal,
+    ];
+    orderCart.unshift(newRow);
+    sessionStorage.setItem('order_cart', JSON.stringify(orderCart));
     }
 
     success.textContent = "Order Completed!";

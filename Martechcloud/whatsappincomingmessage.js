@@ -6,7 +6,8 @@ async function fetchAndDisplayMessages() {
         return decrypted;
     }
     var encryptedUrl = "U2FsdGVkX1/sZJvdiwlUYyJedvckjf8NeX7SP/HpDheZ1ybIpIKW7U/yesPj8wEuVy7LmoB8roVj/af3u3I55Je60BCeInWARY7dm2r97HlNEjH5X/HVr/h553Jm4nqF6ApAs++WbkaobVW7M69G6ygdmCdrl6GfJmh0Lf5ODPM=";
-    var password = sessionStorage.getItem("pass");
+    //var password = sessionStorage.getItem("pass");
+    var password = "secret";
     var decryptedUrl = decryptURL(encryptedUrl, password);
 
     document.getElementById('refreshMessages').style.backgroundColor = 'lightgrey';
@@ -136,7 +137,7 @@ async function fetchAndDisplayMessages() {
                             // Make the API call
                             const response = await fetch(url);
                             const data = await response.json();
-                            handleResponse1(data, submitButton);
+                            handleResponsex(data, submitButton);
                             message.REPLY_STATUS = "SENT";
 
                             // Create and append "REPLIED" badge dynamically
@@ -226,7 +227,7 @@ function showError(errorMessage, button) {
 
 
 // Function to handle the server response
-function handleResponse1(response, submitButton) {
+function handleResponsex(response, submitButton) {
     const successMessage = document.getElementById('box');
     const alertMessagegreen = document.getElementById('success');
     const alertMessagered = document.getElementById('almessage');
