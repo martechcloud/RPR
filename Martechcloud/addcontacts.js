@@ -31,13 +31,62 @@ function handleResponse1(response, submitButton) {
     const errorMessage = document.getElementById('box2');
 
     if (response.status === "success") {
+        let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || []
+        let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || []
+        let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || []
         alertMessagegreen.textContent = "Contact Added Sucessfully!";
         successMessage.style.display = "block";
         setTimeout(() => {
             successMessage.style.display = "none";
         }, 3000);
 
-        // Clear input fields
+        const getValue = (id1, id2) => {
+            const val1 = document.getElementById(id1).value.trim();
+            const val2 = document.getElementById(id2).value.trim();
+            return val1 || val2 || ""; // If both are empty, return ""
+        };
+
+        // Get values with fallback
+        const name = getValue("name", "name1");
+        const number = getValue("number", "number1");
+        const email = getValue("email", "email1");
+
+        // Get new row values from the input fields
+        const newRow = [
+            response.message,
+            name,
+            email,
+            number,
+            new Date().toISOString(), // Adding timestamp
+            document.getElementById("age1").value,
+        ];
+
+        const newRow2 = [
+            response.message,
+            "",
+            email,
+            number,
+            "",
+            "",
+            "",
+            "",
+            "ENABLED",
+            new Date().toISOString(), // Adding timestamp
+        ];
+
+        console.log(newRow2)
+
+
+        contactmaster_cart.unshift(newRow);
+        sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
+
+        custom_attribute_cart.unshift(newRow);
+        sessionStorage.setItem('custom_attribute_cart', JSON.stringify(custom_attribute_cart));
+
+        blacklist_cart.unshift(newRow2);
+        sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
+
+        console.log(blacklist_cart)
 
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";

@@ -8,7 +8,7 @@
 
 
 
-let cart = [];
+let custom_attribute_cart = [];
 
 function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
@@ -16,8 +16,9 @@ function fetchDataAndStoreInCart() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CUSTOMER_DATA_TABLE")
         .then(response => response.json())
         .then(data => {
-            cart = data.slice(1); // Store data in cart, skipping header row
-            console.log(cart)
+            custom_attribute_cart = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('custom_attribute_cart', JSON.stringify(custom_attribute_cart));
+            sessionStorage.setItem('contactmaster_cart', JSON.stringify(custom_attribute_cart));
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -27,16 +28,19 @@ function fetchDataAndStoreInCart() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+
     // Add event listener to the button
     document.querySelector(".account-image-reset").addEventListener("click", function () {
+        let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
+
         // Get the input value
         const inputValue = document.getElementById("CUSTOMER_ID").value.trim();
         
         // Search first by Customer ID (row[0]), if not found, search by Customer Phone (row[3])
-        let customer = cart.find(row => row[0] === inputValue);
+        let customer = custom_attribute_cart.find(row => row[0] === inputValue);
         
         if (!customer) {
-            customer = cart.find(row => row[3].toString() === inputValue); // Convert to string for matching
+            customer = custom_attribute_cart.find(row => row[3].toString() === inputValue); // Convert to string for matching
         }
 
         // If customer exists, update the corresponding fields
@@ -160,7 +164,6 @@ document.getElementById('submitbutton').addEventListener('click', async function
 
     // Function to handle the server response
     function handleResponse1(response, submitButton) {
-        console.log("all set")
         const successMessage = document.getElementById('box');
         const alertMessagegreen = document.getElementById('success');
         const alertMessagered = document.getElementById('almessage');
@@ -169,19 +172,22 @@ document.getElementById('submitbutton').addEventListener('click', async function
         console.log(response.status)
 
         if (response.status === "success") {
+            let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
+            let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || [];
             const CUSTOMER_ID = document.getElementById('CUSTOMER_ID_FIELD').value;
             const CUSTOMER_NAME = document.getElementById('CUSTOMER_NAME').value; 
             const CUSTOMER_EMAIL = document.getElementById('CUSTOMER_EMAIL').value; 
             const CUSTOMER_PHONE = document.getElementById('CUSTOMER_PHONE').value; 
             const AGE = document.getElementById('AGE').value;
             const REGISTRATION_DATE = document.getElementById('REGISTRATION_DATE').value;
-            let index = cart.findIndex(item => item[0] === CUSTOMER_ID);
-            console.log(CUSTOMER_ID)
-            console.log(cart)
-            console.log(index)
+            let index = custom_attribute_cart.findIndex(item => item[0] === CUSTOMER_ID);
+            let index2 = contactmaster_cart.findIndex(item => item[0] === CUSTOMER_ID);
             if (index !== -1) {
                 // Update existing customer data
-                cart[index] = [CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_EMAIL, CUSTOMER_PHONE, REGISTRATION_DATE, AGE];
+                custom_attribute_cart[index] = [CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_EMAIL, CUSTOMER_PHONE, REGISTRATION_DATE, AGE];
+                contactmaster_cart[index2] = [CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_EMAIL, CUSTOMER_PHONE, REGISTRATION_DATE, AGE];
+                sessionStorage.setItem('custom_attribute_cart', JSON.stringify(custom_attribute_cart));
+                sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
             }
 
             alertMessagegreen.textContent = "Contact Updated!";

@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -8,213 +20,6 @@
   data-template="vertical-menu-template-free"
 >
   <head>
-    <style>
-      .template-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 15px; /* Adjust spacing between templates */
-          justify-content: flex-start; /* Align items properly */
-          font-size: 14px;
-      }
-
-      .template-container {
-          width: calc(33.33% - 15px); /* Adjust based on number of columns (e.g., 3 per row) */
-          width: 300px; /* Prevent items from being too small */
-          box-sizing: border-box;
-          font-size: 14px;
-      }
-
-      #searchInput {
-          padding: 12px 20px;
-          width: 100%;
-          max-width: 300px;
-          margin: 20px auto;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          font-size: 14px;
-          outline: none;
-          transition: all 0.3s ease-in-out;
-          
-      }
-
-      /* Focus effect on the search input */
-      #searchInput:focus {
-          border-color: #4CAF50;
-          box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
-      }
-
-      /* Styling the placeholder text */
-      #searchInput::placeholder {
-          color: #888;
-          font-style: italic;
-      }
-
-
-      .card {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          background-color: white;
-          margin: 0;
-          flex-wrap: wrap; /* Allows horizontal wrapping of phones */
-          gap: 20px; /* Adds spacing between phones */
-      }
-      .iphone {
-          width: 225px;
-          height: 450px;
-          background-color: #000;
-          border-radius: 30px;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-          margin-left: 25px;
-      }
-      .screen {
-          width: 210px;
-          height: 435px;
-          background-color: #e5ddd5;
-          border-radius: 22px;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          font-family: Arial, sans-serif;
-          overflow-y: auto; /* Enables vertical scrolling */
-          overflow-x: hidden; /* Hides horizontal scroll */
-          scrollbar-width: none; /* Hides scrollbar in Firefox */
-      }
-
-      /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
-      .screen::-webkit-scrollbar {
-          display: none; /* Completely hides scrollbar */
-      }
-
-
-      .notch {
-          width: 105px;
-          height: 22px;
-          background-color: #000;
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          border-bottom-left-radius: 11px;
-          border-bottom-right-radius: 11px;
-      }
-
-
-      .header {
-          width: 100%;
-          height: 30px;
-          background-color: #075e54;
-          color: white;
-          display: flex;
-          align-items: center;
-          padding: 4px;
-          font-weight: bold;
-          font-size: 14px;
-          border-top-left-radius: 22px;
-          border-top-right-radius: 22px;
-          position: absolute;
-          top: 0;
-      }
-
-    .iphone {
-        position: relative; /* Allow positioning of headers inside it */
-    }
-
-    .header {
-        width: 100%;
-        height: 30px;
-        background-color: #075e54;
-        color: white;
-        display: flex;
-        align-items: center;
-        padding: 4px;
-        font-weight: bold;
-        font-size: 14px;
-        border-top-left-radius: 22px;
-        border-top-right-radius: 22px;
-        position: absolute;
-        top: 0;
-    }
-
-      .bottom-header-btn {
-          width: 95%;
-          height: 30px;
-          background-color: rgba(14, 15, 15, 0.5);;
-          color: white;
-          display: flex;
-          align-items: center;
-          padding: 8px;
-          font-weight: bold;
-          font-size: 14px;
-          align-items: center; /* Vertically center the text */
-          justify-content: center; /* Horizontally center the text */
-          border-bottom-left-radius: 22px;
-          border-bottom-right-radius: 22px;
-          position: absolute;
-          bottom: 0; /* Position at the bottom */
-          margin-bottom: 7px;
-      }
-      .chat-container {
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          padding: 8px;
-          margin-top: 30px;
-      }
-      .incoming-message {
-          width: 99%;
-          background-color: #ffffff;
-          padding: 8px;
-          border-radius: 8px;
-          margin-top: 8px;
-          align-self: flex-start;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-          font-size: 12px;
-          line-height: 1.4;
-      }
-      .cta-container {
-          width: 99%;
-          height: 30px;
-          border-radius: 8px;
-          margin-top: 0px;
-          border-top: 1px solid #ccc;
-      }
-      .cta-link {
-          display: block;
-          width: 99%;
-          background-color: #ffffff;
-          color: green;
-          padding: 8px;
-          text-align: center;
-          font-weight: bold;
-          text-decoration: none;
-          border-radius: 0;
-          font-size: 10px;
-      }
-
-      .loader-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            display: none;
-        }
-  </style>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -243,6 +48,7 @@
     <link rel="stylesheet" href="css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -261,19 +67,6 @@
   </head>
 
   <body>
-    <style>
-      #dataTable th, 
-      #dataTable td {
-          padding: 30px; /* Increase padding for more height */
-
-      }
-
-      /* Add green vertical line on hover */
-      #dataTable tbody tr:hover {
-          border-left: 4px solid var(--bs-primary); /* Green color */
-          
-      }
-    </style>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -345,7 +138,7 @@
 
             <li class="menu-item">
               <a href="martechcloudpos.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Analytics">POS</div>
               </a>
             </li>
@@ -353,16 +146,17 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Engage</span>
             </li>
-            <li class="menu-item active open">
+            <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-envelope me-1"></i>
+                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Content</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="martechcloudwhatsappcontent.html" class="menu-link">
                     <div data-i18n="Under Maintenance">WhatsApp</div>
                   </a>
+                </li>
               </ul>
             </li>
 
@@ -387,13 +181,13 @@
             
             <!-- Misc -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Action</span></li>
-            <li class="menu-item">
+            <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Misc">Account</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
+              <ul class="menu-sub active open">
+                <li class="menu-item active">
                   <a href="martechcloudsettings.html" class="menu-link">
                     <div data-i18n="Under Maintenance">Settings</div>
                   </a>
@@ -434,18 +228,6 @@
             </div>
 
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                  <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                    id="searchInput" 
-                  />
-                </div>
-              </div>
               
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
@@ -459,6 +241,7 @@
                     <span class="tf-icons bx bx-bell"></span>
                   </button>
                 </li>
+
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -518,8 +301,24 @@
 
           <!-- / Navbar -->
 
+          <div
+                class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0"
+                role="alert"
+                id = "box"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+              <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Martech Cloud</div>
+                    <small>0 mins ago</small>
+                </div>
+              <div id = "success" class="toast-body">
+                Green
+              </div>
+              </div>
 
-          <!-- Content -->
+          <!-- Content wrapper -->
           <div class="col-lg-3 col-md-6">
             <div class="mt-3">
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
@@ -558,54 +357,6 @@
           
           <div class="col-lg-4 col-md-6">
             <div class="mt-3">
-              <!-- Modal -->
-              <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalCenterTitle">Test template notification</h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="row">
-                        <div class="col mb-3">
-                          <label for="nameWithTitle" class="form-label">TEMPLATE NAME</label>
-                          <input
-                            type="text"
-                            id="template_name"
-                            class="form-control"
-                            placeholder="Primary Key"
-                          disabled/>
-                        </div>
-                      </div>
-                      <div class="row g-2">
-                        <div class="col mb-0">
-                          <label for="dobWithTitle" class="form-label">PHONE</label>
-                          <input
-                            type="tel"
-                            id="PHONE"
-                            class="form-control"
-                            placeholder="Phone"
-                            oninput="validatePhoneNumber(this)"
-                          />
-                          <small id="phoneError" style="color: red; display: none;">Please enter a valid phone number.</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                      </button>
-                      <button id="editButton" type="button" class="btn btn-primary">Send Test</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -644,31 +395,261 @@
           </div>
 
 
+
           <div class="content-wrapper">
+            <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-                <h4 class="fw-bold py-3 mb-4">
-                    <span class="text-muted fw-light">Content /</span> WhatsApp
-                </h4>
-                <!-- Added wrapper for layout control -->
-                <div class="template-grid">
-                  <div class="loader-overlay" id="loader">Loading...</div>
-                </div>  
+              <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Account / </span> Settings
+              </h4>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-6 col-12 mb-md-0 mb-4">
+                      <div class="card">
+                        <h5 class="card-header">Account Status</h5>
+                        <div class="card-body">
+                          <!-- Connections -->
+                          <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                              <img src="img/icons/brands/8.png" alt="google" class="me-3" height="30" />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-9 mb-sm-0 mb-2">
+                                <h6 id="primaryprofileusername" class="mb-0"></h6>
+                                <small id="primaryprofilerole" class="text-muted"></small>
+                                <div><small class="text-muted" id="MartechIP"></small></div>
+                              </div>
+                              <div class="col-3 text-end">
+                                <div class="form-check form-switch">
+                                  <input class="form-check-input float-end" type="checkbox" role="switch" checked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /Connections -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <div class="card">
+                        <h5 class="card-header">Account Details</h5>
+                        <div class="card-body">
+                          <!-- Connections -->
+                          <div class="d-flex mb-3">
+                            <div class="flex-grow-1 row">
+                              <div class="col-9 mb-sm-0 mb-2">
+                                <h6 class="mb-3" id="MartechName"><i class="fas fa-user"></i> <span></span></h6>
+                                <h6 class="mb-3" id="MartechEmail"><i class="fas fa-envelope"></i> <span></span></h6>
+                                <h6 class="mb-3" id="MartechPhone"><i class="fas fa-phone"></i> <span></span></h6>
+                                <h6 class="mb-3" id="industry"><i class="fas fa-internet"></i> <span></span></h6>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /Connections -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <div class="card">
+                        <h5 class="card-header">Advanced Details</h5>
+                        <div class="card-body">
+                          <!-- Connections -->
+                          <div class="d-flex mb-3">
+                            <div class="flex-grow-1 row">
+                              <div class="col-9 mb-sm-0 mb-2">
+                                <h6 class="mb-3" id="first_primary"><i class="fas fa-user"></i> <span></span></h6>
+                                <h6 class="mb-3" id="second_primary"><i class="fas fa-user"></i> <span></span></h6>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /Connections -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <div class="card">
+                        <h5 class="card-header">Integrated Channels</h5>
+                        <div class="card-body">
+                          <!-- Social Accounts -->
+                          <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                              <img
+                                src="img/icons/brands/gmail.png"
+                                alt="facebook"
+                                class="me-3"
+                                height="30"
+                              />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                <h6 class="mb-0">Email</h6>
+                                <a href="mailto:helpdesk.martechcloud@gmail.com" >helpdesk.martechcloud@gmail.com</a>
+                              </div>
+                              <div class="col-4 col-sm-5 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" role="switch" checked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                              <img
+                                src="img/icons/brands/sms.png"
+                                alt="twitter"
+                                class="me-3"
+                                height="30"
+                              />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                <h6 class="mb-0">SMS</h6>
+                                <small class="text-muted">Not Connected</small>
+                              </div>
+                              <div class="col-4 col-sm-5 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" role="switch" unchecked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                              <img
+                                src="img/icons/brands/whatsapp.png"
+                                alt="dribbble"
+                                class="me-3"
+                                height="30"
+                              />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                <h6 class="mb-0">WhatsApp</h6>
+                                <a href="tel:+918208710562" >+918208710562</a>
+                              </div>
+                              <div class="col-4 col-sm-5 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" role="switch" checked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                              <img
+                                src="img/icons/brands/instagram.png"
+                                alt="instagram"
+                                class="me-3"
+                                height="30"
+                              />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                <h6 class="mb-0">instagram</h6>
+                                <a href="https://www.instagram.com/sai_thombare/" target="_blank">@sai_thombare</a>
+                              </div>
+                              <div class="col-4 col-sm-5 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" role="switch" checked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="d-flex">
+                            <div class="flex-shrink-0">
+                              <img
+                                src="img/icons/brands/github.png"
+                                alt="behance"
+                                class="me-3"
+                                height="30"
+                              />
+                            </div>
+                            <div class="flex-grow-1 row">
+                              <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                <h6 class="mb-0">Others</h6>
+                                <small class="text-muted">Not Connected</small>
+                              </div>
+                              <div class="col-4 col-sm-5 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" role="switch" unchecked disabled/>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- /Social Accounts -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <div class="card">
+                        <h5 class="card-header">Chnage Password</h5>
+                        <div class="card-body">
+                          <!-- Connections -->
+                          <div class="d-flex mb-3">
+                              <div class="flex-grow-1 row">
+                                  <div class="col-9 mb-sm-0 mb-2">
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <label for="current_password" class="form-label">Current Password <span style="color: red; font-size: 1.2em;">*</span></label>
+                                              <input type="password" class="form-control" id="current_password" placeholder="Enter current password">
+                                          </div>
+                                          <div class="col-md-6">
+                                              <label for="new_password" class="form-label">New Password <span style="color: red; font-size: 1.2em;">*</span></label>
+                                              <input type="password" class="form-control" id="new_password" placeholder="Enter new password">
+                                          </div>
+                                      </div>
+                                      <button class="btn btn-primary mt-3" id="chnage_password">Change Password</button>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- /Connections -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  &nbsp;
+                  <div class="card">
+                    <h5 class="card-header">Delete Account</h5>
+                    <div class="card-body">
+                      <div class="mb-3 col-12 mb-0">
+                        <div class="alert alert-warning">
+                          <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
+                          <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+                        </div>
+                      </div>
+                      <form id="formAccountDeactivation" onsubmit="return false">
+                        <div class="form-check mb-3">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="accountActivation"
+                            id="accountActivation"
+                          disabled/>
+                          <label class="form-check-label" for="accountActivation"
+                            >I confirm my account deactivation</label
+                          >
+                        </div>
+                        <button type="submit" class="btn btn-danger deactivate-account" disabled>Deactivate Account</button>
+                      </form>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+            <!-- / Content -->
 
-    <script>
-      window.onload = function() {
-        fetchTemplates();
-      };
-    </script>
-
+    <!-- Core JS -->
     <script>
       function incomingmessage() {
         fetchAndDisplayMessages();
       }
     </script>
 
-    <!-- Core JS -->
+    <script>
+      document.getElementById('refreshMessages').addEventListener('click', function() {
+            fetchAndDisplayMessages();
+        });
+    </script> 
     <!-- build:js assets/vendor/js/core.js -->
     <script src="libs/jquery/jquery.js"></script>
     <script src="libs/popper/popper.js"></script>
@@ -677,23 +658,17 @@
 
     <script src="js/logout.js"></script>
     <script src="js/profile.js"></script>
+    <script src="js/chnagepass.js"></script>
 
     <script src="js/menu.js"></script>
+    <script src="Martech Cloud/whatsappincomingmessage.js"></script>
     <!-- endbuild -->
-
     <!-- Vendors JS -->
-    <script src="libs/apex-charts/apexcharts.js"></script>
 
     <!-- Main JS -->
     <script src="js/main.js"></script>
 
-    <script src="Martechcloud/whatsappcontent.js"></script>
-
     <!-- Page JS -->
-    <script src="Martech Cloud/whatsappincomingmessage.js"></script>
-   
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
 
   </body>
 </html>

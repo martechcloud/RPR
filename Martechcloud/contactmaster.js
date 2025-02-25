@@ -9,7 +9,7 @@
 
 
 
-let cart = [];
+let contactmaster_cart = [];
 
 function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
@@ -18,7 +18,9 @@ function fetchDataAndStoreInCart() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CUSTOMER_DATA_TABLE")
         .then(response => response.json())
         .then(data => {
-            cart = data.slice(1); // Store data in cart, skipping header row
+            contactmaster_cart = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
+            sessionStorage.setItem('custom_attribute_cart', JSON.stringify(contactmaster_cart));
             loadTable(); // Call loadTable to update UI
         })
         .catch(error => console.error('Error fetching data:', error))
@@ -30,13 +32,25 @@ function fetchDataAndStoreInCart() {
 
 
 function loadTable() {
-    console.log("Loaded");
+    let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || [];
+
+    if (contactmaster_cart.length === 0) {
+        fetchDataAndStoreInCart();  // Ensure this function is defined
+    } else {
+        // Ensure it's properly converted to an array (if stored incorrectly)
+        if (!Array.isArray(contactmaster_cart)) {
+            contactmaster_cart = [contactmaster_cart]; // Convert to an array if it's not already
+        }
+    }
+
+    console.log(contactmaster_cart)
+
     var dataTable = document.getElementById("dataTable");
     dataTable.getElementsByTagName('tbody')[0].innerHTML = '';
 
     const tableBody = document.querySelector('#dataTable tbody');
 
-    cart.forEach(rowData => {
+    contactmaster_cart.forEach(rowData => {
         const newRow = document.createElement('tr');
 
         // Extract only the first 5 columns
@@ -219,15 +233,23 @@ document.getElementById('editButton').addEventListener('click', async function (
             const REGISTRATION_DATE = document.getElementById('REGISTRATION_DATE').value;
 
         // Update cart with new values
-            const index = cart.findIndex(row => row[0] === CUSTOMER_ID);
-            console.log(CUSTOMER_ID)
-            console.log(index)
+            let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || [];
+            let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
+            let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
+            const index = contactmaster_cart.findIndex(row => row[0] === CUSTOMER_ID);
+            const index2 = custom_attribute_cart.findIndex(row => row[0] === CUSTOMER_ID);
+            const index3 = blacklist_cart.findIndex(row => row[0] === CUSTOMER_ID);
             if (index !== -1) {
-                cart[index] = [CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE, REGISTRATION_DATE];
+                contactmaster_cart[index] = [CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE, REGISTRATION_DATE];
+                custom_attribute_cart[index2] = [CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE, REGISTRATION_DATE, custom_attribute_cart[index2][5]];
+                blacklist_cart[index3] = [CUSTOMER_ID, "", EMAIL, PHONE, "", "", "", "", blacklist_cart[index3][8], blacklist_cart[index3][9]];
+                sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
+                sessionStorage.setItem('custom_attribute_cart', JSON.stringify(custom_attribute_cart));
+                sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
+
                 loadTable(); // Refresh table after update
             }
 
-            loadTable();
             alertMessagegreen.textContent = "Contact Updated!";
             $('#largeModal').modal('hide');
             successMessage.style.display = "block";

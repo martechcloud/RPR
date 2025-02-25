@@ -9,7 +9,7 @@
 
 
 
-let cart = [];
+let campaignsummary_cart = [];
 
 function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
@@ -18,7 +18,8 @@ function fetchDataAndStoreInCart() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CAMPAIGN_DATA_TABLE")
         .then(response => response.json())
         .then(data => {
-            cart = data.slice(1); // Store data in cart, skipping header row
+            campaignsummary_cart = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('campaignsummary_cart', JSON.stringify(campaignsummary_cart));
             loadTable(); // Call loadTable to update UI
         })
         .catch(error => console.error('Error fetching data:', error))
@@ -30,7 +31,18 @@ function fetchDataAndStoreInCart() {
 
 
 function loadTable() {
-    console.log("Loaded");
+
+    let campaignsummary_cart = JSON.parse(sessionStorage.getItem('campaignsummary_cart')) || [];
+
+    if (campaignsummary_cart.length === 0) {
+        fetchDataAndStoreInCart();  // Ensure this function is defined
+    } else {
+        // Ensure it's properly converted to an array (if stored incorrectly)
+        if (!Array.isArray(campaignsummary_cart)) {
+            campaignsummary_cart = [campaignsummary_cart]; // Convert to an array if it's not already
+        }
+    }
+
     var dataTable = document.getElementById("dataTable");
     dataTable.getElementsByTagName('thead')[0].innerHTML = `
         <tr>
@@ -48,7 +60,7 @@ function loadTable() {
     const tableBody = document.querySelector('#dataTable tbody');
     tableBody.innerHTML = ''; // Clear previous data
 
-    cart.forEach(rowData => {
+    campaignsummary_cart.forEach(rowData => {
         const newRow = document.createElement('tr');
 
         // Extract only the first 6 columns

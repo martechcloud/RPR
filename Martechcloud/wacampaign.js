@@ -26,9 +26,18 @@ function showError(errorMessage, button) {
     resetSubmitButton(button);
 }
 
-let cart = [];
+let segments_cart2 = [];
 
 function fetchDataAndStoreInCart() {
+
+    let segments_cart2 = JSON.parse(sessionStorage.getItem('segments_cart2')) || [];
+
+    if (segments_cart2.length !== 0) {
+        populateSegmentDropdown();
+        updateReachableCountallcontacts();
+        return;
+    } 
+
     const submitButton = document.getElementById("nextStep");
     const errorMessage = document.getElementById('box2');
     let campaign_name = document.getElementById("campaign_name").value.trim(); // Trim to remove extra spaces
@@ -48,16 +57,15 @@ function fetchDataAndStoreInCart() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=SEGMENTS")
         .then(response => response.json())
         .then(data => {
-            cart = data.slice(1); // Store data in cart, skipping header row
-            console.log(cart)
+            segments_cart2 = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('segments_cart2', JSON.stringify(segments_cart2));
+            sessionStorage.setItem('segments_cart', JSON.stringify(segments_cart2));
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
             loaderContainer.style.display = "none"; // Hide spinner
             loaderContainerx.style.display = "none"; // Hide spinner
             resetSubmitButton(submitButton);
-            document.getElementById("campaignForm").style.display = "none";
-            document.getElementById("nextForm").style.display = "block";
             populateSegmentDropdown();
             updateReachableCountallcontacts();
         });
@@ -65,10 +73,22 @@ function fetchDataAndStoreInCart() {
 
 
 function populateSegmentDropdown() {
+    let segments_cart2 = JSON.parse(sessionStorage.getItem('segments_cart2')) || [];
+
+    const submitButton = document.getElementById("nextStep");
+    const errorMessage = document.getElementById('box2');
+    let campaign_name = document.getElementById("campaign_name").value.trim(); // Trim to remove extra spaces
+
+    if (!campaign_name) {
+        document.getElementById('almessage').innerHTML = "Campaign Name is mandatory!"
+        showError(errorMessage, submitButton);
+        return;
+    }
+
     const segmentDropdown = document.getElementById("listSegment");
     segmentDropdown.innerHTML = '<option value="">Segments</option>'; // Reset dropdown
 
-    cart.forEach(row => {
+    segments_cart2.forEach(row => {
         if (row.length > 3) { // Ensure row has data and reachability count exists
             let segmentName = row[0]; // First column contains the segment name
             let option = document.createElement("option");
@@ -78,6 +98,9 @@ function populateSegmentDropdown() {
             segmentDropdown.appendChild(option);
         }
     });
+
+    document.getElementById("campaignForm").style.display = "none";
+    document.getElementById("nextForm").style.display = "block";
 
     // Add event listener to update reachable count when selection changes
     segmentDropdown.addEventListener("change", updateReachableCount);
@@ -137,9 +160,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-let cart2 = [];
+let whatsappcontent_cart2 = [];
 
 function fetchDataAndStoreInCart2() {
+
     const listSegmentsRadio = document.getElementById("listSegments");
     const segmentDropdown = document.getElementById("listSegment").value;
     const submitButton = document.getElementById("nextStep2");
@@ -151,6 +175,15 @@ function fetchDataAndStoreInCart2() {
         return;
     }
 
+    let whatsappcontent_cart2 = JSON.parse(sessionStorage.getItem('whatsappcontent_cart2')) || [];
+
+    if (whatsappcontent_cart2.length !== 0) {
+        document.getElementById("nextForm").style.display = "none";
+        document.getElementById("messageForm").style.display = "block";
+        populateTemplateDropdown();
+        return;
+    } 
+
     const loaderContainer = document.getElementById("loader2"); 
     loaderContainer.style.display = "flex"; // Show loading spinner
     const loaderContainery = document.getElementById("loadery"); 
@@ -159,17 +192,33 @@ function fetchDataAndStoreInCart2() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES")
         .then(response => response.json())
         .then(data => {
-            cart2 = data.slice(1); // Store data in cart, skipping header row
+            whatsappcontent_cart2 = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('whatsappcontent_cart2', JSON.stringify(whatsappcontent_cart2));
+            sessionStorage.setItem('whatsappcontent_cart', JSON.stringify(whatsappcontent_cart2));
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
-            fetchDataAndStoreInCart3();
+            document.getElementById("nextForm").style.display = "none";
+            document.getElementById("messageForm").style.display = "block";
+            populateTemplateDropdown();
         });
 }
 
-let cart3 = [];
+/*
+
+let user_attributes_cart = [];
 
 function fetchDataAndStoreInCart3() {
+
+    let user_attributes_cart = JSON.parse(sessionStorage.getItem('user_attributes_cart')) || [];
+
+    if (user_attributes_cart.length !== 0) {
+        document.getElementById("nextForm").style.display = "none";
+        document.getElementById("messageForm").style.display = "block";
+        populateTemplateDropdown();
+        return;
+    } 
+
     const loaderContainer = document.getElementById("loader2"); 
     loaderContainer.style.display = "flex"; // Show loading spinner
     const loaderContainery = document.getElementById("loadery"); 
@@ -178,8 +227,8 @@ function fetchDataAndStoreInCart3() {
     fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=ATTRIBUTES")
         .then(response => response.json())
         .then(data => {
-            cart3 = data.slice(1); // Store data in cart, skipping header row
-            console.log(cart3)
+            user_attributes_cart = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('user_attributes_cart', JSON.stringify(user_attributes_cart));
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -192,13 +241,15 @@ function fetchDataAndStoreInCart3() {
         });
 }
 
+*/
 
 function populateTemplateDropdown() {
-    console.log(cart2);
+    let whatsappcontent_cart2 = JSON.parse(sessionStorage.getItem('whatsappcontent_cart2')) || [];
+
     const template_dropdown = document.getElementById("template_dropdown");
     template_dropdown.innerHTML = '<option value="">Select a Template</option>'; // Reset dropdown
 
-    cart2.forEach(row => {
+    whatsappcontent_cart2.forEach(row => {
         if (row.length > 1) { // Ensure row has data and reachability count exists
             let templateName = row[0]; // First column contains the template name
             let option = document.createElement("option");
@@ -213,42 +264,49 @@ function populateTemplateDropdown() {
         const selectedTemplate = this.value;
 
         // Find the selected template in cart2
-        const selectedRow = cart2.find(row => row[0] === selectedTemplate);
+        const selectedRow = whatsappcontent_cart2.find(row => row[0] === selectedTemplate);
+        console.log(whatsappcontent_cart2)
 
         if (selectedRow) {
             const numberOfFields = parseInt(selectedRow[7]); // Get row[7] value
+            const numberOfFieldsvalues = selectedRow[13]; // Get row[7] value
+            console.log(numberOfFieldsvalues)
 
             // Call function to create input fields
-            generateDynamicFields(numberOfFields);
+            generateDynamicFields(numberOfFields, numberOfFieldsvalues);
         }
     });
 }
 
-// Function to generate input fields dynamically based on numberOfFields
-function generateDynamicFields(numberOfFields) {
+function generateDynamicFields(numberOfFields, numberOfFieldsvalues) {
     const container = document.getElementById("dynamicVariableContainer");
     container.innerHTML = ""; // Clear previous fields
 
-    for (let i = 1; i <= numberOfFields; i++) {
+    // Ensure numberOfFieldsvalues is an array
+    const valuesArray = Array.isArray(numberOfFieldsvalues) ? numberOfFieldsvalues : numberOfFieldsvalues.split(",").map(val => val.trim());
+
+    for (let i = 0; i < numberOfFields; i++) {
         const colDiv = document.createElement("div");
-        colDiv.className = "col-md-6 mb-3 px-3";; // Adds margin for spacing
+        colDiv.className = "col-md-6 mb-3 px-3"; // Adds margin for spacing
 
         colDiv.innerHTML = `
-            <label style="margin-left: 10px;">{{${i}}} *</label>
-            <select class="form-control dynamic-dropdown" style="margin-left: 10px; width: 350px;" required>
-                ${populateSegmentOptions()}  
-            </select>
+            <label style="margin-left: 10px;">{{${i+1}}} *</label>
+            <input type="text" class="form-control" style="margin-left: 10px; width: 350px;" required value="${valuesArray[i] || ''}" disabled>
         `;
 
         container.appendChild(colDiv);
     }
 }
 
+
+/*
+
 // Function to populate options dynamically from cart3
 function populateSegmentOptions() {
     let optionsHTML = `<option value="">Select an option</option>`;
+    let user_attributes_cart = JSON.parse(sessionStorage.getItem('user_attributes_cart')) || [];
     
-    cart3.forEach(row => {
+    user_attributes_cart.forEach(row => {
         if (row.length > 0) { // Ensure the row has data
             let attributeName = row[0]; // First column contains the attribute name
             optionsHTML += `<option value="${attributeName}">${attributeName}</option>`;
@@ -257,6 +315,8 @@ function populateSegmentOptions() {
 
     return optionsHTML;
 }
+
+*/
 
 
 
@@ -395,6 +455,35 @@ function handleResponse1(response, submitButton) {
     const errorMessage = document.getElementById('box2');
 
     if (response.status === "success") {
+        let campaignsummary_cart = JSON.parse(sessionStorage.getItem('campaignsummary_cart')) || []
+
+        const campaignName = document.getElementById('summary_campaign4').innerText;
+        let when = document.getElementById('when').innerText;
+
+        if (when === "Send Now") {
+            when = new Date().toISOString(); // Adding timestamp
+        } 
+
+        // Get new row values from the input fields
+        const newRow = [
+            response.message,
+            campaignName,
+            "WHATSAPP",
+            "",
+            "",
+            when,
+            "",
+            "",
+            "0",
+            "0",
+            "0",
+            "0"
+        ];
+
+
+        campaignsummary_cart.unshift(newRow);
+        sessionStorage.setItem('campaignsummary_cart', JSON.stringify(campaignsummary_cart));
+
         alertMessagegreen.textContent = "Request Submitted!";
         successMessage.style.display = "block";
         setTimeout(() => {
@@ -425,6 +514,12 @@ document.getElementById("publish_campaign").addEventListener("click", async () =
     const excludedContacts = document.getElementById('summary_exclude3').innerText;
     const waTemplateName = document.getElementById('template_name2').innerText;
     const when = document.getElementById('when').innerText;
+
+    if (when === "Send Later") {
+        alertMessagered.textContent = "Please pick a time to schedule a campaign.";
+        showError(errorMessage, submitButton);
+        return;
+    }
 
     // Disable the submit button while processing
     disableButton(submitButton);

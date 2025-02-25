@@ -9,7 +9,7 @@
 
 
 
-let cart = [];
+let blacklist_cart = [];
 
 async function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
@@ -32,8 +32,8 @@ async function fetchDataAndStoreInCart() {
             return matchingRow2 ? [...row1, ...matchingRow2] : [...row1, ...Array(data2[0].length).fill(null)];
         });
 
-        cart = mergedData
-        console.log(cart);
+        blacklist_cart = mergedData
+        sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
         loadTable(); // Call loadTable to update UI
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -67,13 +67,24 @@ function showError(errorMessage, button) {
 }
 
 function loadTable() {
-    console.log("Loaded");
+    let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
+    console.log(blacklist_cart)
+
+    if (blacklist_cart.length === 0) {
+        fetchDataAndStoreInCart();  // Ensure this function is defined
+    } else {
+        // Ensure it's properly converted to an array (if stored incorrectly)
+        if (!Array.isArray(blacklist_cart)) {
+            blacklist_cart = [blacklist_cart]; // Convert to an array if it's not already
+        }
+    }
+
     var dataTable = document.getElementById("dataTable");
     dataTable.getElementsByTagName('tbody')[0].innerHTML = '';
 
     const tableBody = document.querySelector('#dataTable tbody');
 
-    cart.forEach(rowData => {
+    blacklist_cart.forEach(rowData => {
         const newRow = document.createElement('tr');
 
         // Select only specific columns (e.g., second, third, and fourth column)
@@ -142,13 +153,14 @@ function loadTable() {
         
                 if (typeof handleResponse1 === "function") {
                     handleResponse1(data, submitButton);
-                    const index = cart.findIndex(item => item[0] === col1);
+                    const index = blacklist_cart.findIndex(item => item[0] === col1);
                     if (index !== -1) {
-                        cart[index][8] = "BLACKLISTED"; // Assuming column 2 holds the status
+                        blacklist_cart[index][8] = "BLACKLISTED"; // Assuming column 2 holds the status
                         let currentDate = new Date().toISOString(); // Formats the date as "2025-02-18T12:05:43.942Z"
 
                         // Set this date in cart[index][9]
-                        cart[index][9] = currentDate;
+                        blacklist_cart[index][9] = currentDate;
+                        sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
                         loadTable(); // Reload the table to reflect the changes
                     }
                 } else {
@@ -193,13 +205,14 @@ function loadTable() {
         
                 if (typeof handleResponse1 === "function") {
                     handleResponse1(data, submitButton);
-                    const index = cart.findIndex(item => item[0] === col1);
+                    const index = blacklist_cart.findIndex(item => item[0] === col1);
                     if (index !== -1) {
-                        cart[index][8] = "ENABLED"; // Assuming column 2 holds the status
+                        blacklist_cart[index][8] = "ENABLED"; // Assuming column 2 holds the status
                         let currentDate = new Date().toISOString(); // Formats the date as "2025-02-18T12:05:43.942Z"
 
                         // Set this date in cart[index][9]
-                        cart[index][9] = currentDate;
+                        blacklist_cart[index][9] = currentDate;
+                        sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
                         loadTable(); // Reload the table to reflect the changes
                     }
                 } else {
@@ -239,12 +252,6 @@ function loadTable() {
         }
     });
 }
-
-
-
-
-
-
 
 
 

@@ -1,25 +1,40 @@
-let cart = [];
-const loaderContainer = document.getElementById("loader"); 
-loaderContainer.style.display = "flex"; // Show loading spinner
+let whatsappcontent_cart = [];
 
-// Fetch templates from the Google Sheet
-fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES") 
-    .then(response => response.json())
-    .then(data => {
-        cart = data.slice(1); // Store data in cart, skipping header row
-        console.log(cart);
 
-        // Now call the function to create the iPhone frames for each cart item
+function fetchTemplates() {
+    let whatsappcontent_cart = JSON.parse(sessionStorage.getItem('whatsappcontent_cart')) || [];
+    console.log(whatsappcontent_cart)
+
+    if (whatsappcontent_cart.length !== 0) {
         const container = document.querySelector(".template-grid");
-        cart.forEach(item => {
+        whatsappcontent_cart.forEach(item => {
             const iphoneHTML = createIphone(item);
             container.insertAdjacentHTML('beforeend', iphoneHTML);
         });
-    })
-    .catch(error => console.error('Error fetching data:', error))
-    .finally(() => {
-        loaderContainer.style.display = "none"; // Hide spinner
-    });
+        return;
+    }
+
+    const loaderContainer = document.getElementById("loader");
+    loaderContainer.style.display = "flex"; // Show loading spinner
+
+    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES") 
+        .then(response => response.json())
+        .then(data => {
+            const whatsappcontent_cart = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('whatsappcontent_cart', JSON.stringify(whatsappcontent_cart));
+
+            // Now call the function to create the iPhone frames for each cart item
+            const container = document.querySelector(".template-grid");
+            whatsappcontent_cart.forEach(item => {
+                const iphoneHTML = createIphone(item);
+                container.insertAdjacentHTML('beforeend', iphoneHTML);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => {
+            loaderContainer.style.display = "none"; // Hide spinner
+        });
+}
 
 
 function createIphone(item) {
@@ -87,8 +102,9 @@ function sendTest(templateName) {
 
 // Search function
 document.getElementById('searchInput').addEventListener('input', function() {
+    let whatsappcontent_cart = JSON.parse(sessionStorage.getItem('whatsappcontent_cart')) || [];
     const searchValue = this.value.toLowerCase();
-    const filteredTemplates = cart.filter(item => item[0].toLowerCase().includes(searchValue));
+    const filteredTemplates = whatsappcontent_cart.filter(item => item[0].toLowerCase().includes(searchValue));
     
     // Clear the current templates and display the filtered ones
     const container = document.querySelector(".template-grid");
@@ -172,10 +188,10 @@ document.getElementById('editButton').addEventListener('click', async function (
     }
 
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL("https://script.google.com/macros/s/AKfycbzAzZIM7MOjUM3aN1be8HRKtpCAQojxjNC4mrw6GbWyxfVe1_qfcXfI9XxmXJRJf5Z-8w/exec");
 
     // Append all the captured data as query parameters
-    url.searchParams.append("usecase", "WAtesttemplates");
+    url.searchParams.append("usecase", "TEST_MESSAGE");
     url.searchParams.append("TEMPLATE_ID", TEMPLATE_ID);
     url.searchParams.append("PHONE", PHONE);
 

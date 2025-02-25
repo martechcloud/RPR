@@ -36,7 +36,15 @@ async function fetchData() {
 
 // Organize data into categories dynamically (called only once on page load)
 async function organizeItems() {
-    const data = await fetchData();
+
+    let data2 = JSON.parse(sessionStorage.getItem('data2')) || [];
+
+    if (data2.length === 0) {
+      let data = await fetchData();
+      sessionStorage.setItem('data2', JSON.stringify(data));
+    }
+    let data = data2;
+
     items = {};  // Reset items
     data.slice(1).forEach(row => { // Skip the header row
         const [productId, productName, productCategory, productPrice, productimage] = row;
@@ -120,7 +128,7 @@ function createMenuItem(item, category, index, container) {
 
 // Search only items in the "home" category
 async function searchItems() {
-  const query = document.getElementById('search-bar').value.toLowerCase().trim();
+  const query = (document.getElementById('search-bar2')?.value || document.getElementById('search-bar')?.value || "").toLowerCase().trim();
   const menuItemsDiv = document.getElementById('menu-items');
   menuItemsDiv.innerHTML = '';
 
@@ -538,6 +546,7 @@ function setActive(element) {
 //Refresh Menu
 
 document.getElementById("refreshmenu-btn").addEventListener("click", async () => {
+    sessionStorage.setItem('data2', JSON.stringify([]));
     const submitButton = document.getElementById('refreshmenu-btn')
     submitButton.style.backgroundColor = 'lightgrey';
     submitButton.style.border = 'lightgrey';
@@ -896,12 +905,14 @@ document.getElementById('submitorder').addEventListener('click', async function 
           return;
       }
   }
+  let randomkey = generateRandomKey();
 
   // Construct the URL for the Apps Script web app (replace with your actual web app URL)
   const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
 
   // Append all the captured data as query parameters
   url.searchParams.append("usecase", "addorder");
+  url.searchParams.append("randomkey", randomkey);
   url.searchParams.append("customerName", customerName);
   url.searchParams.append("phoneNumber", phoneNumber);
   url.searchParams.append("paymentMethod", paymentMethod);
@@ -915,6 +926,49 @@ document.getElementById('submitorder').addEventListener('click', async function 
     // Make a GET request to the Google Apps Script web app
     const response = await fetch(url);
     const data = await response.json();
+
+    let contactmaster_cart = JSON.parse(sessionStorage.getItem('contactmaster_cart')) || [];
+    let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
+    let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
+    let pn = document.getElementById('phoneSmall').value;
+    let cn = document.getElementById('nameSmall').value;
+    let ce = document.getElementById('emailSmall').value;
+    const phoneExists = contactmaster_cart.some(row => String(row[3]) === String(pn));
+
+    if (!phoneExists) {
+      // Get new row values from the input fields
+      const newRow = [
+          randomkey,
+          cn,
+          ce,
+          pn,
+          new Date().toISOString(), // Adding timestamp
+          ""
+      ];
+
+      const newRow2 = [
+          randomkey,
+          "",
+          ce,
+          pn,
+          "",
+          "",
+          "",
+          "",
+          "ENABLED",
+          new Date().toISOString(), // Adding timestamp
+      ];
+
+      contactmaster_cart.unshift(newRow);
+      sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
+
+      custom_attribute_cart.unshift(newRow);
+      sessionStorage.setItem('custom_attribute_cart', JSON.stringify(custom_attribute_cart));
+
+      blacklist_cart.unshift(newRow2);
+      sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
+
+    }
 
     success.textContent = "Order Completed!";
     successMessage.style.display = "block";
@@ -956,3 +1010,9 @@ document.getElementById('submitorder').addEventListener('click', async function 
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function generateRandomKey(length = 10) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+}
