@@ -74,8 +74,6 @@ function handleResponse1(response, submitButton) {
             new Date().toISOString(), // Adding timestamp
         ];
 
-        console.log(newRow2)
-
 
         contactmaster_cart.unshift(newRow);
         sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
@@ -85,8 +83,6 @@ function handleResponse1(response, submitButton) {
 
         blacklist_cart.unshift(newRow2);
         sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
-
-        console.log(blacklist_cart)
 
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";
@@ -159,8 +155,11 @@ document.getElementById("submitbutton1").addEventListener("click", async () => {
     // Disable the submit button while processing
     disableButton(submitButton);
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";     
+    const decryptedUrl = decryptURL(encryptedUrl, SessionStorage.getItem('MartechDataPass'));
+
     // Construct the URL
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
     url.searchParams.append("usecase", "addnewbasiccontact");
     url.searchParams.append("name", name);
     url.searchParams.append("number", number);
@@ -171,7 +170,6 @@ document.getElementById("submitbutton1").addEventListener("click", async () => {
         // Make the API call
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
         handleResponse1(data, submitButton);
       } catch (error) {
         alertMessagered.textContent = "An unexpected error occurred. Please try again.";
@@ -235,8 +233,11 @@ document.getElementById("submitbutton2").addEventListener("click", async () => {
     // Disable the submit button while processing
     disableButton(submitButton);
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";     
+    const decryptedUrl = decryptURL(encryptedUrl, SessionStorage.getItem('MartechDataPass'));
+
     // Construct the URL
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
     url.searchParams.append("usecase", "addnewadvancecontact");
     url.searchParams.append("name", name);
     url.searchParams.append("number", number);
@@ -248,7 +249,6 @@ document.getElementById("submitbutton2").addEventListener("click", async () => {
         // Make the API call
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
         handleResponse1(data, submitButton);
       } catch (error) {
         alertMessagered.textContent = "An unexpected error occurred. Please try again.";
@@ -292,3 +292,11 @@ function validateemail(input) {
         emailError2.style.display = "block";
     }
 }
+
+
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}
+
+
+

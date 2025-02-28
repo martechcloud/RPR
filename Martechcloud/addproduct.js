@@ -48,8 +48,13 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
     // Disable the submit button while processing
     disableButton(submitButton);
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     // Construct the URL
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
     url.searchParams.append("usecase", "addnewproduct");
     url.searchParams.append("productName", productName);
     url.searchParams.append("productCategory", productCategory);
@@ -147,8 +152,13 @@ document.getElementById("modal-deleteproduct").addEventListener("click", async (
       return;
     }
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
     url.searchParams.append("productName", productName);
     url.searchParams.append("usecase", "deleteproduct");
 
@@ -246,8 +256,13 @@ document.getElementById("productimage").addEventListener("change", async functio
       successMessage.style.display = "none";
     }, 6000);
 
+    const encryptedUrl = "U2FsdGVkX1+n4CxXU+KfYuexrF6XGwrQcV6vdSmBfcrqrctvMG942GXXrVEI/w7UBCe1w5la6q8C6czPdBflA9ki8Edn8R0qDCmhoFfxplG3+jFXbHXtMEwpG5DuzYB+h3ax4lbFzbx6nk/dKSGnH+OFB/V03vUmR9P55rdkPDg+yyCiD9ytrYKNJq2aCbz5";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbwP9yKHm0aiy7iY7gcOF1WnWo5paMHmT5rtbdfuyml-Z5zGP7wWW-Jdc2xbrc1yTMGUzg/exec", {
+      const response = await fetch(decryptedUrl, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString(),
@@ -272,3 +287,8 @@ document.getElementById("productimage").addEventListener("change", async functio
     }
   };
 });
+
+
+function decryptURL(encryptedUrl, password) {
+  return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}

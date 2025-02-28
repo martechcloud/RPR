@@ -17,7 +17,12 @@ function fetchTemplates() {
     const loaderContainer = document.getElementById("loader");
     loaderContainer.style.display = "flex"; // Show loading spinner
 
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES") 
+    const encryptedUrl = "U2FsdGVkX1/jI3DihM4NBvZczFtVxwPvNwnma27AJ8mWUApINjf76e+qd1SupJciDyraO31x0Z7TubEWHwVBB8HGYWIl/z3LYrfqgCN4fAGyY69gcUriKT8jRIO3/WcrTXnNglcSjU4mz8yybDuwbhUSk4i8vF8cfe6JUukwlABUgb3vuFE/8aw19Ka5swFbocj3XauqMhs5yn17AtJLFA==";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
+    fetch(decryptedUrl) 
         .then(response => response.json())
         .then(data => {
             const whatsappcontent_cart = data.slice(1); // Store data in cart, skipping header row
@@ -187,8 +192,13 @@ document.getElementById('editButton').addEventListener('click', async function (
         }
     }
 
+    const encryptedUrl = "U2FsdGVkX18my+d0S2Op+8Yg5kOww+bNhwsa1O0vbNKzZTG1+WIsLeRCJJq6X2PQKA3JozaVXRlJUw8sjebl5gi8ZB4agY0lETUzDsbQSjWuceMM490cprvlJY23XKvYRkweSmxidUmg0sbVaaNQtFfQmLAUozORGiL4bKJVtCPCm66Mds/NTvFQG6K2OmrQ";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
-    const url = new URL("https://script.google.com/macros/s/AKfycbzAzZIM7MOjUM3aN1be8HRKtpCAQojxjNC4mrw6GbWyxfVe1_qfcXfI9XxmXJRJf5Z-8w/exec");
+    const url = new URL(decryptedUrl);
 
     // Append all the captured data as query parameters
     url.searchParams.append("usecase", "TEST_MESSAGE");
@@ -251,6 +261,10 @@ document.getElementById('editButton').addEventListener('click', async function (
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
       }
+
+      function decryptURL(encryptedUrl, password) {
+        return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+    }
 
 
     

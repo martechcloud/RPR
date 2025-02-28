@@ -15,7 +15,13 @@ function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
     loaderContainer.style.display = "flex"; // Show loading spinner
 
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=SEGMENTS")
+    const encryptedUrl = "U2FsdGVkX1/SNIGWtjW4ltoDjburF2qMq7UWDIWDap7jTqF+JG8f1twkG1l/OlIkKmyvPY0nIkLVTxhvjiTi+pW6Hiw6gIKkOOJUVE/Np8Z7nQgpa9xnPRmuhngyrd2efgpAnVgCAcfWizEwUlFiZpkaGYeO5DZW6ivEz2M/Op4gHMLy7F8yLtmYiZsswBtf";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
+
+    fetch(decryptedUrl)
         .then(response => response.json())
         .then(data => {
             segments_cart = data.slice(1); // Store data in cart, skipping header row
@@ -152,4 +158,6 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
     });
 });
 
-    
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}

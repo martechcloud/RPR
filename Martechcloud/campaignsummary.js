@@ -15,7 +15,12 @@ function fetchDataAndStoreInCart() {
     const loaderContainer = document.getElementById("loader"); 
     loaderContainer.style.display = "flex"; // Show loading spinner
 
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CAMPAIGN_DATA_TABLE")
+    const encryptedUrl = "U2FsdGVkX18gpeVWfs/b0fUrfGJ3eW+dc2WQn96OjYggoi8vHPcFkEjZVzkvYhJPINpiDLlmAw/vaipUQKH+wPwKFCfie5X0Zm+iaSKlHekQmrwfQrKBK1t6n0uVS7Fa7Gp9CnxmhqdkaAbA40uOXGzATIt7KuJWMzOdk89O+WmDTSr3AKK8ea0XrpNnRGieJ4Ky3iAJZKA9gFvTnhoXcw==";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
+    fetch(decryptedUrl)
         .then(response => response.json())
         .then(data => {
             campaignsummary_cart = data.slice(1); // Store data in cart, skipping header row
@@ -246,8 +251,13 @@ async function downloadReport(campaignname) {
 
     var MartechEmail = sessionStorage.getItem("MartechEmail");
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
 
     // Append all the captured data as query parameters
     url.searchParams.append("usecase", "downloadreport");
@@ -312,5 +322,9 @@ function showError(errorMessage, button) {
         errorMessage.style.display = "none";
     }, 3000);
     enableButton(button);
+}
+
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
 }
 

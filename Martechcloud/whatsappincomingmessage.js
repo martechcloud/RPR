@@ -1,10 +1,6 @@
 'use strict';
 
 async function fetchAndDisplayMessages() {
-    function decryptURL(encryptedUrl, password) {
-        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
-        return decrypted;
-    }
     var encryptedUrl = "U2FsdGVkX1/sZJvdiwlUYyJedvckjf8NeX7SP/HpDheZ1ybIpIKW7U/yesPj8wEuVy7LmoB8roVj/af3u3I55Je60BCeInWARY7dm2r97HlNEjH5X/HVr/h553Jm4nqF6ApAs++WbkaobVW7M69G6ygdmCdrl6GfJmh0Lf5ODPM=";
     //var password = sessionStorage.getItem("pass");
     var password = "secret";
@@ -126,7 +122,12 @@ async function fetchAndDisplayMessages() {
                         const submitButton = document.getElementById('replyback');
                         disableButton(submitButton);
 
-                        const url = new URL("https://script.google.com/macros/s/AKfycbzAzZIM7MOjUM3aN1be8HRKtpCAQojxjNC4mrw6GbWyxfVe1_qfcXfI9XxmXJRJf5Z-8w/exec");
+                        const encryptedUrl = "U2FsdGVkX18my+d0S2Op+8Yg5kOww+bNhwsa1O0vbNKzZTG1+WIsLeRCJJq6X2PQKA3JozaVXRlJUw8sjebl5gi8ZB4agY0lETUzDsbQSjWuceMM490cprvlJY23XKvYRkweSmxidUmg0sbVaaNQtFfQmLAUozORGiL4bKJVtCPCm66Mds/NTvFQG6K2OmrQ";
+ 
+                        var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+                        const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
+                        const url = new URL(decryptedUrl);
                         url.searchParams.append("usecase", "REPLY_BACK");
                         url.searchParams.append("To", message.fromPhoneNumber);
                         url.searchParams.append("Text", replyText);
@@ -248,6 +249,11 @@ function handleResponsex(response, submitButton) {
     // Enable the submit button
     enableButton(submitButton);
 }
+
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}
+
 
 
 

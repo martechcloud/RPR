@@ -1,7 +1,23 @@
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
+}
+
+var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
+
+const contactmaster_cart_encryptedUrl1 = "U2FsdGVkX1/JjaWRcYVy/4CeOjNTKlCODRZCTCuMOug5D7wpBtytWoIUjZogaAC95R66MfXx5syOVPEa7ZE2TPTp4Mg3U9GbpnH6LoYQ4jp9oOubDV6cF6GLEMUtqcVR+FZkKrghMiSqS5ZrGjh6RosrsUbtE8i5GPucyOGP1bPFhSlYt4rfNL91BEU5VAwBgFjA4cOzdEXKu6dqLZMOyQ==";
+const segments_cart_encryptedUrl1 = "U2FsdGVkX1/SNIGWtjW4ltoDjburF2qMq7UWDIWDap7jTqF+JG8f1twkG1l/OlIkKmyvPY0nIkLVTxhvjiTi+pW6Hiw6gIKkOOJUVE/Np8Z7nQgpa9xnPRmuhngyrd2efgpAnVgCAcfWizEwUlFiZpkaGYeO5DZW6ivEz2M/Op4gHMLy7F8yLtmYiZsswBtf";
+const blacklist_cart_encryptedUrl1 = "U2FsdGVkX19J/Dw6/E4/02sk4TQ1ezGRuB1wdWnczWHTV2k+ZjthLQKGkuM9gV0DEWd8j58nbHTVycS4mS5LbpoJcXqAE4wnqF1V8IV7SNVuBEewzrG6jkI95GsZIRGlHh1PK/WjXhdIF2MSYYV64PXJVLt/tuIwhAxGUwaZz3Q7WSxDwEldhyXfzpLfqmnGhp2igBNNUBOHkPZSXOMdUw==";
+const product_cart_encryptedUrl1 = "U2FsdGVkX1+lJ+VLtI9uTGd3PVgOyI1F6Gfj5Tk59xTfAPQ+iAfx5P4Z/hcfBEFDMeLhSuRK7nB9vXF+5AV58Z3dXviB57duY4GqrwAB9zSG3RX+bY7wu7Pxto/y+/lJOEBZVQ3/auByikIovhu6S0Q3rgiPoS8V6iTEecB0axYxn5j0i7yLHlEVMB0+SVywYRgSsaz5M+yJohfL4t+N1w==";
+const whatsappcontent_cart_encryptedUrl1 = "U2FsdGVkX1/jI3DihM4NBvZczFtVxwPvNwnma27AJ8mWUApINjf76e+qd1SupJciDyraO31x0Z7TubEWHwVBB8HGYWIl/z3LYrfqgCN4fAGyY69gcUriKT8jRIO3/WcrTXnNglcSjU4mz8yybDuwbhUSk4i8vF8cfe6JUukwlABUgb3vuFE/8aw19Ka5swFbocj3XauqMhs5yn17AtJLFA==";
+const campaignsummary_cart_encryptedUrl1 = "U2FsdGVkX18gpeVWfs/b0fUrfGJ3eW+dc2WQn96OjYggoi8vHPcFkEjZVzkvYhJPINpiDLlmAw/vaipUQKH+wPwKFCfie5X0Zm+iaSKlHekQmrwfQrKBK1t6n0uVS7Fa7Gp9CnxmhqdkaAbA40uOXGzATIt7KuJWMzOdk89O+WmDTSr3AKK8ea0XrpNnRGieJ4Ky3iAJZKA9gFvTnhoXcw==";
+const order_cart1_encryptedUrl1 = "U2FsdGVkX18t/9TtZ3VI2yqH93faawfva3Hflz7E7r1nLr8tmyRS2ZnjdhyREM9m6Gt30lH1m/KtSppFjZCnU4lG3lSey4Yi6KjoAgNKsFmf5wzlvQlz6tPiimE5ayyQucgBuQmHs/S/Um1LLxxw6ZLSRqasta6s+t89IiXhW9rqyAoy1gnH0u/iPj8U34f0m0YQ1UInTV/AIoK/RKKVdQ==";
+const communication_logs_encryptedUrl1 = "U2FsdGVkX1/A5kQ/h54dMDHtIGhp/orrValXifgXVLRoGQ/KLq2NCszTBQzSv5M3PjHv91YDykS61yy878DNVDE1mmgwnPP9CAY9ufBRRKXSxovBUeLFp3UPgAxzcBrpPtyug40Sfzo2OgsRxLsbWRKTuvdwDnwXfcbVdjYIwOQ1PxRhbaz4TCUtZ6BNaGF48ZBse7ldFTiu7GACMBsHR5wPZtHKnZMTNmhxtisB7No=";
+
 let contactmaster_cart = [];
 
 function contactmaster_cart1() {
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CUSTOMER_DATA_TABLE")
+    const contactmaster_cart_encryptedUrl = decryptURL(contactmaster_cart_encryptedUrl1, MartechDataPass);
+    fetch(contactmaster_cart_encryptedUrl)
         .then(response => response.json())
         .then(data => {
             contactmaster_cart = data.slice(1); // Store data in cart, skipping header row
@@ -18,7 +34,8 @@ function contactmaster_cart1() {
 let segments_cart = [];
 
 function segments_cart1() {
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=SEGMENTS")
+    const segments_cart_encryptedUrl = decryptURL(segments_cart_encryptedUrl1, MartechDataPass);
+    fetch(segments_cart_encryptedUrl)
         .then(response => response.json())
         .then(data => {
             segments_cart = data.slice(1); // Store data in cart, skipping header row
@@ -35,9 +52,11 @@ function segments_cart1() {
 let blacklist_cart = [];
 
 async function blacklist_cart1() {
+    const contactmaster_cart_encryptedUrl = decryptURL(contactmaster_cart_encryptedUrl1, MartechDataPass);
+    const blacklist_cart_encryptedUrl = decryptURL(blacklist_cart_encryptedUrl1, MartechDataPass);
 
-    const url1 = "https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CUSTOMER_DATA_TABLE";
-    const url2 = "https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=OPT-IN_DATA_TABLE";
+    const url1 = contactmaster_cart_encryptedUrl;
+    const url2 = blacklist_cart_encryptedUrl;
 
     try {
         const [response1, response2] = await Promise.all([
@@ -68,7 +87,8 @@ async function blacklist_cart1() {
 // Fetch data from the Apps Script URL only once
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=PRODUCT_DATA_TABLE');
+        const product_cart_encryptedUrl = decryptURL(product_cart_encryptedUrl1, MartechDataPass);
+        const response = await fetch(product_cart_encryptedUrl);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -86,8 +106,8 @@ async function product_cart1() {
 let whatsappcontent_cart = [];
 
 function whatsappcontent_cart1() {
-
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES") 
+    const whatsappcontent_cart_encryptedUrl = decryptURL(whatsappcontent_cart_encryptedUrl1, MartechDataPass);
+    fetch(whatsappcontent_cart_encryptedUrl) 
         .then(response => response.json())
         .then(data => {
             const whatsappcontent_cart = data.slice(1); // Store data in cart, skipping header row
@@ -104,7 +124,8 @@ function whatsappcontent_cart1() {
 let campaignsummary_cart = [];
 
 function campaignsummary_cart1() {
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=CAMPAIGN_DATA_TABLE")
+    const campaignsummary_cart_encryptedUrl = decryptURL(campaignsummary_cart_encryptedUrl1, MartechDataPass);
+    fetch(campaignsummary_cart_encryptedUrl)
         .then(response => response.json())
         .then(data => {
             campaignsummary_cart = data.slice(1); // Store data in cart, skipping header row
@@ -121,7 +142,8 @@ function campaignsummary_cart1() {
 let order_cart1 = [];
 
 function order_cart() {
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=ORDER_DATA_TABLE")
+    const order_cart1_encryptedUrl = decryptURL(order_cart1_encryptedUrl1, MartechDataPass);
+    fetch(order_cart1_encryptedUrl)
         .then(response => response.json())
         .then(data => {
             order_cart1 = data.slice(1); // Store data in cart, skipping header row
@@ -138,7 +160,8 @@ function order_cart() {
 let communication_logs = [];
 
 function communication_logs1() {
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=COMMUNICATION_LOGS_DATA_TABLE")
+    const communication_logs_encryptedUrl = decryptURL(communication_logs_encryptedUrl1, MartechDataPass);
+    fetch(communication_logs_encryptedUrl)
         .then(response => response.json())
         .then(data => {
             communication_logs = data.slice(1); // Store data in cart, skipping header row
@@ -147,6 +170,11 @@ function communication_logs1() {
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
-            login();
+            const redirection = sessionStorage.getItem("redirection") || "User";
+            const loaderOverlay = document.getElementById("loaderOverlay");
+
+            loaderOverlay.style.opacity = "0";
+            loaderOverlay.style.visibility = "hidden";
+            window.location.href = redirection;
         });
 }

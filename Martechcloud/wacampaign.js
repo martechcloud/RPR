@@ -54,7 +54,12 @@ function fetchDataAndStoreInCart() {
     loaderContainerx.style.display = "flex"; // Show loading spinner
     disableButton(submitButton);
 
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=SEGMENTS")
+    const encryptedUrl = "U2FsdGVkX1/SNIGWtjW4ltoDjburF2qMq7UWDIWDap7jTqF+JG8f1twkG1l/OlIkKmyvPY0nIkLVTxhvjiTi+pW6Hiw6gIKkOOJUVE/Np8Z7nQgpa9xnPRmuhngyrd2efgpAnVgCAcfWizEwUlFiZpkaGYeO5DZW6ivEz2M/Op4gHMLy7F8yLtmYiZsswBtf";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
+    fetch(decryptedUrl)
         .then(response => response.json())
         .then(data => {
             segments_cart2 = data.slice(1); // Store data in cart, skipping header row
@@ -189,7 +194,12 @@ function fetchDataAndStoreInCart2() {
     const loaderContainery = document.getElementById("loadery"); 
     loaderContainery.style.display = "flex"; // Show loading spinner
     disableButton(submitButton);
-    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=WHATSAPP_TEMPLATES")
+
+    const encryptedUrl = "U2FsdGVkX1/jI3DihM4NBvZczFtVxwPvNwnma27AJ8mWUApINjf76e+qd1SupJciDyraO31x0Z7TubEWHwVBB8HGYWIl/z3LYrfqgCN4fAGyY69gcUriKT8jRIO3/WcrTXnNglcSjU4mz8yybDuwbhUSk4i8vF8cfe6JUukwlABUgb3vuFE/8aw19Ka5swFbocj3XauqMhs5yn17AtJLFA==";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+    fetch(decryptedUrl)
         .then(response => response.json())
         .then(data => {
             whatsappcontent_cart2 = data.slice(1); // Store data in cart, skipping header row
@@ -524,8 +534,13 @@ document.getElementById("publish_campaign").addEventListener("click", async () =
     // Disable the submit button while processing
     disableButton(submitButton);
 
+    const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
+ 
+    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
+
     // Construct the URL
-    const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
+    const url = new URL(decryptedUrl);
     url.searchParams.append("usecase", "createcampaign");
     url.searchParams.append("campaignName", campaignName);
     url.searchParams.append("campaignchannel", "WHATSAPP");
@@ -571,4 +586,8 @@ function showError(errorMessage, button) {
         errorMessage.style.display = "none";
     }, 3000);
     enableButton(button);
+}
+
+function decryptURL(encryptedUrl, password) {
+    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
 }
