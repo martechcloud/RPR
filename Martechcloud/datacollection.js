@@ -130,6 +130,23 @@ function order_cart() {
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
+            communication_logs1();
+        });
+}
+
+
+let communication_logs = [];
+
+function communication_logs1() {
+    fetch("https://script.google.com/macros/s/AKfycbzXWL8oN0knVFt2ZV5w6CVSPvZ2iHtToxhQgqova7AobgeP6qEhp50R8lwVNLEndxSp/exec?sheet=COMMUNICATION_LOGS_DATA_TABLE")
+        .then(response => response.json())
+        .then(data => {
+            communication_logs = data.slice(1); // Store data in cart, skipping header row
+            sessionStorage.setItem('communication_logs', JSON.stringify(communication_logs));
+            console.log(communication_logs)
+        })
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => {
             login();
         });
 }

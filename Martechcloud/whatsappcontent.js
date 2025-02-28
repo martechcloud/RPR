@@ -214,6 +214,22 @@ document.getElementById('editButton').addEventListener('click', async function (
         const errorMessage = document.getElementById('box2');
 
         if (response.status === "success") {
+            let randomkey = generateRandomKey();
+            const communication_logs = JSON.parse(sessionStorage.getItem("communication_logs") || "[]");
+            const newRow = [
+                randomkey,
+                "",
+                "",
+                "",
+                "", 
+                "",
+                "",
+                "WHATSAPP",
+            ];
+
+            communication_logs.unshift(newRow);
+            sessionStorage.setItem('communication_logs', JSON.stringify(communication_logs));
+
             alertMessagegreen.textContent = "Request Submitted!";
             $('#largeModal').modal('hide');
             successMessage.style.display = "block";
@@ -229,6 +245,12 @@ document.getElementById('editButton').addEventListener('click', async function (
         // Enable the submit button
         resetSubmitButton(submitButton);
     }
+
+
+    function generateRandomKey(length = 10) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+      }
 
 
     

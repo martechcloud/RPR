@@ -906,6 +906,7 @@ document.getElementById('submitorder').addEventListener('click', async function 
       }
   }
   let randomkey = generateRandomKey();
+  let randomkey2 = generateRandomKey();
 
   // Construct the URL for the Apps Script web app (replace with your actual web app URL)
   const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
@@ -935,7 +936,7 @@ document.getElementById('submitorder').addEventListener('click', async function 
     let pn = document.getElementById('phoneSmall').value;
     let cn = document.getElementById('nameSmall').value;
     let ce = document.getElementById('emailSmall').value;
-    const phoneExists = contactmaster_cart.some(row => String(row[3]) === String(pn));
+    const phoneExists = contactmaster_cart.find(row => String(row[3]) === String(pn));
 
     if (!phoneExists) {
       // Get new row values from the input fields
@@ -962,8 +963,8 @@ document.getElementById('submitorder').addEventListener('click', async function 
       ];
 
       const newRow3 = [
+        randomkey2,
         randomkey,
-        "",
         new Date().toISOString(),
         "",
         "",
@@ -983,9 +984,10 @@ document.getElementById('submitorder').addEventListener('click', async function 
       sessionStorage.setItem('order_cart', JSON.stringify(orderCart));
 
     } else {
+      const randomkey = phoneExists ? phoneExists[0] : null;
       const newRow = [
+        randomkey2,
         randomkey,
-        "",
         new Date().toISOString(),
         "",
         "",

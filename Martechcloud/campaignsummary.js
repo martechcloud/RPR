@@ -244,13 +244,15 @@ async function downloadReport(campaignname) {
         successMessage.style.display = "none";
     }, 6000);
 
+    var MartechEmail = sessionStorage.getItem("MartechEmail");
+
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
     const url = new URL("https://script.google.com/macros/s/AKfycbzkgR57couUXfhmao-0GP4khq5WVVDza3m3bnki9izyBV-vErRBkRg0fPfuDcBUA4ulUQ/exec");
 
     // Append all the captured data as query parameters
     url.searchParams.append("usecase", "downloadreport");
     url.searchParams.append("campaignname", campaignname);
-    url.searchParams.append("email", "helpdesk.martechcloud@gmail.com");
+    url.searchParams.append("email", MartechEmail);
 
     try {
         // Make the API call
