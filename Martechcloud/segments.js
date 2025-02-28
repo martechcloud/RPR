@@ -17,7 +17,7 @@ function fetchDataAndStoreInCart() {
 
     const encryptedUrl = "U2FsdGVkX1/SNIGWtjW4ltoDjburF2qMq7UWDIWDap7jTqF+JG8f1twkG1l/OlIkKmyvPY0nIkLVTxhvjiTi+pW6Hiw6gIKkOOJUVE/Np8Z7nQgpa9xnPRmuhngyrd2efgpAnVgCAcfWizEwUlFiZpkaGYeO5DZW6ivEz2M/Op4gHMLy7F8yLtmYiZsswBtf";
  
-    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
 

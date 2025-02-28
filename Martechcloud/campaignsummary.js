@@ -17,7 +17,7 @@ function fetchDataAndStoreInCart() {
 
     const encryptedUrl = "U2FsdGVkX18gpeVWfs/b0fUrfGJ3eW+dc2WQn96OjYggoi8vHPcFkEjZVzkvYhJPINpiDLlmAw/vaipUQKH+wPwKFCfie5X0Zm+iaSKlHekQmrwfQrKBK1t6n0uVS7Fa7Gp9CnxmhqdkaAbA40uOXGzATIt7KuJWMzOdk89O+WmDTSr3AKK8ea0XrpNnRGieJ4Ky3iAJZKA9gFvTnhoXcw==";
  
-    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     fetch(decryptedUrl)
@@ -253,7 +253,7 @@ async function downloadReport(campaignname) {
 
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
-    var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)

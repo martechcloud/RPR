@@ -124,7 +124,7 @@ async function fetchAndDisplayMessages() {
 
                         const encryptedUrl = "U2FsdGVkX18my+d0S2Op+8Yg5kOww+bNhwsa1O0vbNKzZTG1+WIsLeRCJJq6X2PQKA3JozaVXRlJUw8sjebl5gi8ZB4agY0lETUzDsbQSjWuceMM490cprvlJY23XKvYRkweSmxidUmg0sbVaaNQtFfQmLAUozORGiL4bKJVtCPCm66Mds/NTvFQG6K2OmrQ";
  
-                        var MartechDataPass = SessionStorage.getItem('MartechDataPass');       
+                        var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
                         const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
                         const url = new URL(decryptedUrl);

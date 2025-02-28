@@ -2,7 +2,6 @@ function decryptURL(encryptedUrl, password) {
     return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
 }
 
-var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
 
 const contactmaster_cart_encryptedUrl1 = "U2FsdGVkX1/JjaWRcYVy/4CeOjNTKlCODRZCTCuMOug5D7wpBtytWoIUjZogaAC95R66MfXx5syOVPEa7ZE2TPTp4Mg3U9GbpnH6LoYQ4jp9oOubDV6cF6GLEMUtqcVR+FZkKrghMiSqS5ZrGjh6RosrsUbtE8i5GPucyOGP1bPFhSlYt4rfNL91BEU5VAwBgFjA4cOzdEXKu6dqLZMOyQ==";
 const segments_cart_encryptedUrl1 = "U2FsdGVkX1/SNIGWtjW4ltoDjburF2qMq7UWDIWDap7jTqF+JG8f1twkG1l/OlIkKmyvPY0nIkLVTxhvjiTi+pW6Hiw6gIKkOOJUVE/Np8Z7nQgpa9xnPRmuhngyrd2efgpAnVgCAcfWizEwUlFiZpkaGYeO5DZW6ivEz2M/Op4gHMLy7F8yLtmYiZsswBtf";
@@ -16,6 +15,7 @@ const communication_logs_encryptedUrl1 = "U2FsdGVkX1/A5kQ/h54dMDHtIGhp/orrValXif
 let contactmaster_cart = [];
 
 function contactmaster_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const contactmaster_cart_encryptedUrl = decryptURL(contactmaster_cart_encryptedUrl1, MartechDataPass);
     fetch(contactmaster_cart_encryptedUrl)
         .then(response => response.json())
@@ -34,6 +34,7 @@ function contactmaster_cart1() {
 let segments_cart = [];
 
 function segments_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const segments_cart_encryptedUrl = decryptURL(segments_cart_encryptedUrl1, MartechDataPass);
     fetch(segments_cart_encryptedUrl)
         .then(response => response.json())
@@ -52,6 +53,7 @@ function segments_cart1() {
 let blacklist_cart = [];
 
 async function blacklist_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const contactmaster_cart_encryptedUrl = decryptURL(contactmaster_cart_encryptedUrl1, MartechDataPass);
     const blacklist_cart_encryptedUrl = decryptURL(blacklist_cart_encryptedUrl1, MartechDataPass);
 
@@ -86,6 +88,7 @@ async function blacklist_cart1() {
 
 // Fetch data from the Apps Script URL only once
 async function fetchData() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     try {
         const product_cart_encryptedUrl = decryptURL(product_cart_encryptedUrl1, MartechDataPass);
         const response = await fetch(product_cart_encryptedUrl);
@@ -97,6 +100,7 @@ async function fetchData() {
 }
 
 async function product_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     let data = await fetchData();
     sessionStorage.setItem('data2', JSON.stringify(data));
     console.log(data)
@@ -106,6 +110,7 @@ async function product_cart1() {
 let whatsappcontent_cart = [];
 
 function whatsappcontent_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const whatsappcontent_cart_encryptedUrl = decryptURL(whatsappcontent_cart_encryptedUrl1, MartechDataPass);
     fetch(whatsappcontent_cart_encryptedUrl) 
         .then(response => response.json())
@@ -124,6 +129,7 @@ function whatsappcontent_cart1() {
 let campaignsummary_cart = [];
 
 function campaignsummary_cart1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const campaignsummary_cart_encryptedUrl = decryptURL(campaignsummary_cart_encryptedUrl1, MartechDataPass);
     fetch(campaignsummary_cart_encryptedUrl)
         .then(response => response.json())
@@ -142,6 +148,7 @@ function campaignsummary_cart1() {
 let order_cart1 = [];
 
 function order_cart() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const order_cart1_encryptedUrl = decryptURL(order_cart1_encryptedUrl1, MartechDataPass);
     fetch(order_cart1_encryptedUrl)
         .then(response => response.json())
@@ -160,6 +167,7 @@ function order_cart() {
 let communication_logs = [];
 
 function communication_logs1() {
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     const communication_logs_encryptedUrl = decryptURL(communication_logs_encryptedUrl1, MartechDataPass);
     fetch(communication_logs_encryptedUrl)
         .then(response => response.json())
