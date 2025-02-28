@@ -48,10 +48,6 @@ async function login() {
     }
 }
 
-// Function to decrypt URL
-function decryptURL(encryptedUrl, password) {
-    return CryptoJS.AES.decrypt(decodeURIComponent(encryptedUrl), password).toString(CryptoJS.enc.Utf8);
-}
 
 // Function to handle login response
 function handleLoginResponse(data, username, password, ipAddress, submitButton, alertBox, alertMessage, rememberMe) {
@@ -89,16 +85,11 @@ function handleLoginResponse(data, username, password, ipAddress, submitButton, 
             MartechEmail: data.email,
             MartechPhone: data.phone,
             MartechName: data.name,
+            MartechDataPass: data.datapass,
+            redirection: data.redirectUrl,
         };
         Object.entries(userData).forEach(([key, value]) => sessionStorage.setItem(key, value));
-
-        const loaderOverlay = document.getElementById("loaderOverlay");
-
-        loaderOverlay.style.opacity = "0";
-        loaderOverlay.style.visibility = "hidden";
-
-        // Redirect to the given URL
-        window.location.href = data.redirectUrl;
+        contactmaster_cart1();
     }
 }
 
