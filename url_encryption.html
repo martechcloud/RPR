@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Encryption</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+
+<h2>URL Encryption</h2>
+
+<label for="urlInput">Enter URL:</label>
+<input type="text" id="urlInput">
+<br><br>
+<label for="passwordInput">Enter Password:</label>
+<input type="password" id="passwordInput">
+<br><br>
+<button onclick="encryptUrl()">Encrypt URL</button>
+<br><br>
+<p id="encryptedUrl"></p>
+
+<script>
+function encryptUrl() {
+    var url = document.getElementById("urlInput").value;
+    var password = document.getElementById("passwordInput").value;
+
+    if (url && password) {
+        var encryptedUrl = CryptoJS.AES.encrypt(url, password).toString();
+        document.getElementById("encryptedUrl").innerText = "Encrypted URL: " + encryptedUrl;
+    } else {
+        alert("Please enter URL and password.");
+    }
+}
+</script>
+
+</body>
+</html>
