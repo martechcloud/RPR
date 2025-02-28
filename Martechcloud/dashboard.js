@@ -5,7 +5,6 @@ if (cardTitle) cardTitle.innerHTML = `Congratulations ${martechFirstName}! 🎉`
 
 // Retrieve and parse order data
 const orderCart = JSON.parse(sessionStorage.getItem("order_cart") || "[]");
-console.log(orderCart)
 const todayDate = new Date().toISOString().split('T')[0];
 const yesterdayDate = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
@@ -30,7 +29,6 @@ orderCart.forEach(([ , , orderDateFull, , , orderAmount]) => {
 
 // Compute last 7 days sales
 const last7Days = Object.keys(dateSales).sort((a, b) => new Date(a) - new Date(b)).slice(-7);
-console.log(last7Days)
 const last7DaysSalesData = last7Days.map(date => ({
     x: date,
     y: dateSales[date] || 0,
@@ -179,8 +177,6 @@ threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 const lastThreeMonthsOrders = orderCart.filter(order => new Date(order[2]) >= threeMonthsAgo);
 const lastThreeMonthsRpr = calculateRPR(lastThreeMonthsOrders);
 
-console.log("Current Month's RPR:", currentMonthRpr);
-console.log("Last 3 Months' RPR:", lastThreeMonthsRpr);
 
 const thsimrpr = document.querySelector("h6.thsimrpr");
 if (thsimrpr) thsimrpr.innerHTML = `${currentMonthRpr}%`;
@@ -416,7 +412,7 @@ if (totalRevenueChartEl) {
 
 // Total Communication Sent
 const communication_logs = JSON.parse(sessionStorage.getItem("communication_logs") || "[]");
-console.log(communication_logs)
+
 const totalSent = communication_logs.length;
 const totalSentElement = document.querySelector(".totalsent");
 if (totalSentElement) totalSentElement.textContent = totalSent;

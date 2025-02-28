@@ -160,7 +160,6 @@ document.getElementById('submitbutton').addEventListener('click', async function
     url.searchParams.append("CUSTOMER_PHONE", CUSTOMER_PHONE);
     url.searchParams.append("AGE", AGE);
     url.searchParams.append("REGISTRATION_DATE", REGISTRATION_DATE);
-    console.log(url)
 
     try {
         // Make the API call
@@ -179,8 +178,6 @@ document.getElementById('submitbutton').addEventListener('click', async function
         const alertMessagegreen = document.getElementById('success');
         const alertMessagered = document.getElementById('almessage');
         const errorMessage = document.getElementById('box2');
-
-        console.log(response.status)
 
         if (response.status === "success") {
             let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];

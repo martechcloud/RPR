@@ -3,7 +3,6 @@ let whatsappcontent_cart = [];
 
 function fetchTemplates() {
     let whatsappcontent_cart = JSON.parse(sessionStorage.getItem('whatsappcontent_cart')) || [];
-    console.log(whatsappcontent_cart)
 
     if (whatsappcontent_cart.length !== 0) {
         const container = document.querySelector(".template-grid");
@@ -100,7 +99,6 @@ function createIphone(item) {
 
 // Function to handle the Send Test button click
 function sendTest(templateName) {
-    console.log(`Template Name: ${templateName}`);
     document.getElementById('template_name').value = templateName;
     $('#largeModal').modal('show');
 }

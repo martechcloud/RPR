@@ -129,7 +129,6 @@ function updateReachableCount() {
     const segmentDropdown = document.getElementById("listSegment");
     const reachableCountSpan = document.getElementById("reachableCount");
     const selectedOption = segmentDropdown.options[segmentDropdown.selectedIndex];
-    console.log(selectedOption)
 
     if (selectedOption.value) {
         reachableCountSpan.textContent = `Reachable Contacts: ${selectedOption.dataset.reachability}`;
@@ -275,12 +274,10 @@ function populateTemplateDropdown() {
 
         // Find the selected template in cart2
         const selectedRow = whatsappcontent_cart2.find(row => row[0] === selectedTemplate);
-        console.log(whatsappcontent_cart2)
 
         if (selectedRow) {
             const numberOfFields = parseInt(selectedRow[7]); // Get row[7] value
             const numberOfFieldsvalues = selectedRow[13]; // Get row[7] value
-            console.log(numberOfFieldsvalues)
 
             // Call function to create input fields
             generateDynamicFields(numberOfFields, numberOfFieldsvalues);
@@ -424,7 +421,6 @@ document.getElementById("nextStep3").addEventListener("click", function () {
     const errorMessage = document.getElementById('box2');
 
     const preview_template = document.getElementById('template_dropdown').value;
-    console.log(preview_template)
     
     if (preview_template === "") {
         document.getElementById('almessage').innerHTML = "Please select template!"
@@ -554,7 +550,6 @@ document.getElementById("publish_campaign").addEventListener("click", async () =
         // Make the API call
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
         handleResponse1(data, submitButton);
       } catch (error) {
         alertMessagered.textContent = "An unexpected error occurred. Please try again.";

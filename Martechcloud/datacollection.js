@@ -23,7 +23,6 @@ function contactmaster_cart1() {
             contactmaster_cart = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('contactmaster_cart', JSON.stringify(contactmaster_cart));
             sessionStorage.setItem('custom_attribute_cart', JSON.stringify(contactmaster_cart));
-            console.log(contactmaster_cart)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -42,7 +41,6 @@ function segments_cart1() {
             segments_cart = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('segments_cart', JSON.stringify(segments_cart));
             sessionStorage.setItem('segments_cart2', JSON.stringify(segments_cart));
-            console.log(segments_cart)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -76,7 +74,6 @@ async function blacklist_cart1() {
 
         blacklist_cart = mergedData
         sessionStorage.setItem('blacklist_cart', JSON.stringify(blacklist_cart));
-        console.log(blacklist_cart)
     } catch (error) {
         console.error('Error fetching data:', error);
     } finally {
@@ -103,7 +100,6 @@ async function product_cart1() {
     var MartechDataPass = sessionStorage.getItem('MartechDataPass')|| "User";
     let data = await fetchData();
     sessionStorage.setItem('data2', JSON.stringify(data));
-    console.log(data)
     whatsappcontent_cart1();
 }
 
@@ -117,7 +113,6 @@ function whatsappcontent_cart1() {
         .then(data => {
             const whatsappcontent_cart = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('whatsappcontent_cart', JSON.stringify(whatsappcontent_cart));
-            console.log(whatsappcontent_cart)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -136,7 +131,6 @@ function campaignsummary_cart1() {
         .then(data => {
             campaignsummary_cart = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('campaignsummary_cart', JSON.stringify(campaignsummary_cart));
-            console.log(campaignsummary_cart)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -155,7 +149,6 @@ function order_cart() {
         .then(data => {
             order_cart1 = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('order_cart', JSON.stringify(order_cart1));
-            console.log(order_cart1)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {
@@ -174,7 +167,6 @@ function communication_logs1() {
         .then(data => {
             communication_logs = data.slice(1); // Store data in cart, skipping header row
             sessionStorage.setItem('communication_logs', JSON.stringify(communication_logs));
-            console.log(communication_logs)
         })
         .catch(error => console.error('Error fetching data:', error))
         .finally(() => {

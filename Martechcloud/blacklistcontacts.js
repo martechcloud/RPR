@@ -74,7 +74,6 @@ function showError(errorMessage, button) {
 
 function loadTable() {
     let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
-    console.log(blacklist_cart)
 
     if (blacklist_cart.length === 0) {
         fetchDataAndStoreInCart();  // Ensure this function is defined
@@ -141,11 +140,8 @@ function loadTable() {
         blacklistButton.onclick = async function() { // Make function async
             const submitButton = blacklistButton;
             disableButton(submitButton);
-            console.log("Blacklisted:", rowData);
         
             let col1 = rowData[0]; // Second column value
-            console.log("CUSTOMER_ID:", col1);
-
             const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
             var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
@@ -201,7 +197,6 @@ function loadTable() {
             disableButton(submitButton);
 
             let col1 = rowData[0]; // Second column value
-            console.log("CUSTOMER_ID:", col1);
         
             const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  

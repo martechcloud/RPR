@@ -48,7 +48,6 @@ function loadTable() {
         }
     }
 
-    console.log(contactmaster_cart)
 
     var dataTable = document.getElementById("dataTable");
     dataTable.getElementsByTagName('tbody')[0].innerHTML = '';

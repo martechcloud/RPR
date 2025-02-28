@@ -268,7 +268,6 @@ async function downloadReport(campaignname) {
         // Make the API call
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
         handleResponse1(data, submitButton);
     } catch (error) {
         alertMessage.textContent = "An unexpected error occurred. Please try again.";

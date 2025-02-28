@@ -194,7 +194,6 @@ async function searchItems() {
 // Add item to the cart
 function addToCart(category, index) {
     const tableNumber = document.querySelector('.pagination .page-item.active .page-link');
-    console.log(tableNumber)
     const errorMessage = document.getElementById('box2');
     const alertMessage = document.getElementById('almessage');
     if (tableNumber === null) {
@@ -210,7 +209,6 @@ function addToCart(category, index) {
       settlement.value = "";
 
       const item = items[category][index];
-      console.log(category)
       
       // Check if the item is already in the cart
       if (!cart[item.name]) {
@@ -306,7 +304,6 @@ window.onload = async function() {
     await organizeItems(); // Fetch and organize items only once
     showItems('');
     hideSpinner(); // Hide the spinner once data is loaded
-    console.log('Items are now ready for selection.');
     checkSessionElements()
 };
 
@@ -358,7 +355,6 @@ document.getElementById('reset-btn').addEventListener('click', function() {
     sessionStorage.removeItem(activePage + "_waveDiscounts");
     sessionStorage.removeItem(activePage + "_additionalDiscount");
     sessionStorage.removeItem(activePage + "_roundBill");
-    console.log("Session item removed!");
 });
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -462,8 +458,6 @@ document.getElementById('draft-btn').addEventListener('click', function() {
       sessionStorage.setItem(activePage + "_additionalDiscount", additionalDiscount);
       sessionStorage.setItem(activePage + "_roundBill", roundBill);
 
-      console.log(sessionStorage.getItem(activePage))
-      console.log(activePage)
       success.textContent = "Order Saved as Draft!";
       successMessage.style.display = "block";
       setTimeout(() => {
@@ -490,7 +484,6 @@ function setActive(element) {
 
     // Fetch the data from sessionStorage
     const tableData = sessionStorage.getItem(tableNumber);
-    console.log(tableData)
     if (tableData) {
         resetBilling();
         showItems('');
@@ -877,9 +870,6 @@ document.getElementById('submitorder').addEventListener('click', async function 
   const roundedAmount = document.getElementById('currencyInput').value;
 
   // Print subtotal and discount data
-  console.log('Subtotal:', subtotal);
-  console.log('Discount:', discount);
-  console.log('Rounded Amount:', roundedAmount);
 
   if (phoneNumber !== "") {
     var phonePattern = /^[0-9]{12}$/;
@@ -1010,7 +1000,6 @@ document.getElementById('submitorder').addEventListener('click', async function 
       successMessage.style.display = "none";
     }, 3000);
 
-    console.log("Response from Apps Script:", data);
 
     resetSubmitButton(submitButton);
     const resetButton = document.getElementById('reset-btn');

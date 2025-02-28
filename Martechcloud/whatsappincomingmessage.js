@@ -11,7 +11,6 @@ async function fetchAndDisplayMessages() {
     const response = await fetch(decryptedUrl);
     const data = await response.json();
     
-    console.log(data)
 
     const filteredData = data.filter(message => message.phoneNumber === 918208710562);
     
