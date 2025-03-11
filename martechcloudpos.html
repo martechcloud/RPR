@@ -357,6 +357,12 @@
                 <div data-i18n="Analytics">POS</div>
               </a>
             </li>
+            <li class="menu-item">
+              <a href="martechcloudinventory.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-package"></i>
+                <div data-i18n="Analytics">Inventory</div>
+              </a>
+            </li>
 
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Engage</span>
@@ -575,12 +581,12 @@
                   <div class="row g-2">
                     <div class="col mb-0">
                       <label for="emailWithTitle" class="form-label">PRODUCT CATEGORY</label>
-                      <input
-                        type="text"
-                        id="emailWithTitle"
-                        class="form-control"
-                        placeholder="Enter Category"
-                      />
+                      <select id="emailWithTitle" class="form-control">
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Default">Default</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Beverages">Beverages</option>
+                    </select>
                     </div>
                     <div class="col mb-0">
                       <label for="dobWithTitle" class="form-label">PRODUCT PRICE</label>
@@ -591,6 +597,26 @@
                         placeholder="Enter Price"
                       />
                     </div>
+                  <div class="row g-2">
+                    <div class="col mb-0">
+                      <label for="dobWithTitle" class="form-label">PRODUCT QUANTITY</label>
+                      <input
+                        type="number"
+                        id="productquantity"
+                        class="form-control"
+                        placeholder="Enter Available Quantity"
+                      />
+                    </div>
+                    <div class="col mb-0">
+                        <label for="quantityunit" class="form-label">QUANTITY UNIT</label>
+                        <select id="quantityunit" class="form-control">
+                            <option value="" disabled selected>Select Unit</option>
+                            <option value="KG">Kilograms (kg)</option>
+                            <option value="LITERS">Liters (L)</option>
+                            <option value="PIECES">Pieces</option>
+                        </select>
+                    </div>
+                  </div>
                     <div class="mb-3">
                       <label for="formFile" class="form-label">PRODUCT IMAGE</label>
                       <input class="form-control" id="productimage" type="file" id="formFile" />

@@ -24,7 +24,9 @@ function hideSpinner() {
 }
 
 const encryptedUrl = "U2FsdGVkX1+lJ+VLtI9uTGd3PVgOyI1F6Gfj5Tk59xTfAPQ+iAfx5P4Z/hcfBEFDMeLhSuRK7nB9vXF+5AV58Z3dXviB57duY4GqrwAB9zSG3RX+bY7wu7Pxto/y+/lJOEBZVQ3/auByikIovhu6S0Q3rgiPoS8V6iTEecB0axYxn5j0i7yLHlEVMB0+SVywYRgSsaz5M+yJohfL4t+N1w==";
-var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
+//var MartechDataPass = sessionStorage.getItem('MartechDataPass');    
+
+var MartechDataPass = "admin"
 const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 // Fetch data from the Apps Script URL only once
 async function fetchData() {
@@ -41,6 +43,7 @@ async function fetchData() {
 async function organizeItems() {
 
     let data2 = JSON.parse(sessionStorage.getItem('data2')) || [];
+    console.log(data2)
 
     if (data2.length === 0) {
       let data = await fetchData();

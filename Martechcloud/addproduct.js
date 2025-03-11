@@ -27,13 +27,24 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
     const productCategory = document.getElementById("emailWithTitle").value.trim();
     const productPrice = document.getElementById("dobWithTitle").value.trim();
     let productimage = document.getElementById("imageurl").value.trim();
+    const productquantity = document.getElementById("productquantity").value.trim();
+    const quantityunit = document.getElementById("quantityunit").value.trim();
 
     // Validate inputs
-    if (!productName || !productCategory || !productPrice) {
+    if (!productName || !productCategory || !productPrice || !productquantity || !quantityunit) {
       alertMessagered.textContent = "Please fill all fields before adding the product!";
       showError(errorMessage, submitButton);
       return;
     }
+
+    let data2 = JSON.parse(sessionStorage.getItem('data2')) || [];
+    console.log(data2[1][1])
+    if (Array.isArray(data2[1]) && data2[1][1] === productName) {
+      alertMessagered.textContent = "Product Already Exist!";
+      showError(errorMessage, submitButton);
+      return;
+    }
+    
 
     if (!productimage) {
       productimage = "https://drive.google.com/thumbnail?id=10_lbNhWVNNAdXYt6OLCxqK8rJeHzAzCS";
@@ -50,7 +61,8 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
 
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
-    var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
+    //var MartechDataPass = sessionStorage.getItem('MartechDataPass');   
+    var MartechDataPass ="admin";    
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     // Construct the URL
@@ -60,6 +72,8 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
     url.searchParams.append("productCategory", productCategory);
     url.searchParams.append("productPrice", productPrice);
     url.searchParams.append("productimage", productimage);
+    url.searchParams.append("productquantity", productquantity);
+    url.searchParams.append("quantityunit", quantityunit);
 
     try {
       // Make the API call
@@ -91,6 +105,8 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
       document.getElementById("emailWithTitle").value = "";
       document.getElementById("dobWithTitle").value = "";
       document.getElementById("imageurl").value = "";
+      document.getElementById("productquantity").value = "";
+      document.getElementById("quantityunit").value = "";
     } else {
       alertMessagered.textContent = response.message || "Failed to add product. Please try again.";
       showError(errorMessage, submitButton);
@@ -154,7 +170,8 @@ document.getElementById("modal-deleteproduct").addEventListener("click", async (
 
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
-    var MartechDataPass = sessionStorage.getItem('MartechDataPass');       
+    //var MartechDataPass = sessionStorage.getItem('MartechDataPass');   
+    var MartechDataPass ="admin";         
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)
