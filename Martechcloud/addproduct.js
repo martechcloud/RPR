@@ -61,8 +61,7 @@ document.getElementById("modal-addproduct").addEventListener("click", async () =
 
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
-    //var MartechDataPass = sessionStorage.getItem('MartechDataPass');   
-    var MartechDataPass ="admin";    
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');   
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     // Construct the URL
@@ -170,8 +169,7 @@ document.getElementById("modal-deleteproduct").addEventListener("click", async (
 
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
  
-    //var MartechDataPass = sessionStorage.getItem('MartechDataPass');   
-    var MartechDataPass ="admin";         
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');         
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     // Construct the URL for the Apps Script web app (replace with your actual web app URL)

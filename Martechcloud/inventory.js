@@ -17,8 +17,7 @@ function fetchDataAndStoreInCart() {
 
     const encryptedUrl = "U2FsdGVkX1+lJ+VLtI9uTGd3PVgOyI1F6Gfj5Tk59xTfAPQ+iAfx5P4Z/hcfBEFDMeLhSuRK7nB9vXF+5AV58Z3dXviB57duY4GqrwAB9zSG3RX+bY7wu7Pxto/y+/lJOEBZVQ3/auByikIovhu6S0Q3rgiPoS8V6iTEecB0axYxn5j0i7yLHlEVMB0+SVywYRgSsaz5M+yJohfL4t+N1w==";
  
-    //var MartechDataPass = sessionStorage.getItem('MartechDataPass'); 
-    var MartechDataPass ="admin"
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass'); 
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
 
@@ -105,7 +104,7 @@ async function updateQuantity(productId) {
 
     let newQty = parseInt(qtyInput.value) || 0;
     const encryptedUrl = "U2FsdGVkX1/8r2UM3Oi0yR9VI/LK2t4m3U9RdbJoKJuNyEUEBRsW/1UQC2yj/QsoEG9NQ03LPcBRkfdUIsZO+5QXbLT0hnOD0X4BziSnzTRWniaXqWFpTYBIF0+Ohfeb6Z0cHbp4W/kHaEyToGowMymv2aX2CPgTp8gQm8Jr7z8G5QLuMqOqQLCUtfa0gXjA";
-    var MartechDataPass = "admin";         
+    var MartechDataPass = sessionStorage.getItem('MartechDataPass');     
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
     const url = new URL(decryptedUrl);
@@ -120,6 +119,7 @@ async function updateQuantity(productId) {
     } catch (error) {
         alertMessagered.textContent = "An error occurred while updating the product.";
         showError(errorMessage, submitButton);
+        return;
     }
 
     console.log(`Product ID: ${productId}, Updated Quantity: ${newQty}`);
@@ -129,6 +129,13 @@ async function updateQuantity(productId) {
     submitButton.innerText = "Add Quantity";
     submitButton.classList.replace("btn-success", "btn-primary");
     submitButton.setAttribute("onclick", `editQuantity('${productId}')`);
+
+    let data2 = JSON.parse(sessionStorage.getItem('data2')) || [];
+    const index = data2.findIndex(item => item[0] === productId && item[2] === "Home");
+
+    if (index !== -1) {
+        data2[index][5] = newQty;
+    }  
 }
 
 document.getElementById('refreshButton').addEventListener('click', function() {
