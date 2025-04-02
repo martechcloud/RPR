@@ -51,7 +51,7 @@ async function organizeItems() {
 
     items = {};  // Reset items
     data.slice(1).forEach(row => { // Skip the header row
-        const [productId, productName, productCategory, productPrice, productimage] = row;
+        const [productId, productName, productCategory, productPrice, productimage, productquantity] = row;
         // Check if the category exists, if not create it
         if (!items[productCategory.toLowerCase()]) {
             items[productCategory.toLowerCase()] = [];
@@ -60,7 +60,8 @@ async function organizeItems() {
         items[productCategory.toLowerCase()].push({
             name: productName.trim(),
             price: parseFloat(productPrice),
-            image: productimage.trim().startsWith('//') ? 'https:' + productimage.trim() : productimage.trim()
+            image: productimage.trim().startsWith('//') ? 'https:' + productimage.trim() : productimage.trim(),
+            quantity: productquantity
         });
     });
 }
@@ -197,6 +198,7 @@ function addToCart(category, index) {
     const tableNumber = document.querySelector('.pagination .page-item.active .page-link');
     const errorMessage = document.getElementById('box2');
     const alertMessage = document.getElementById('almessage');
+
     if (tableNumber === null) {
       alertMessage.textContent = "Please select a table before proceeding!";
       errorMessage.style.display = "block"; // Show error message
@@ -210,6 +212,16 @@ function addToCart(category, index) {
       settlement.value = "";
 
       const item = items[category][index];
+      console.log(item)
+
+      if (item.quantity < 1) {  // Correct syntax
+        alertMessage.textContent = "The item is out of stock!";
+        errorMessage.style.display = "block"; // Show error message
+        setTimeout(() => {
+          errorMessage.style.display = "none";
+        }, 3000);
+        return
+      }
       
       // Check if the item is already in the cart
       if (!cart[item.name]) {
@@ -930,11 +942,33 @@ document.getElementById('submitorder').addEventListener('click', async function 
     let custom_attribute_cart = JSON.parse(sessionStorage.getItem('custom_attribute_cart')) || [];
     let blacklist_cart = JSON.parse(sessionStorage.getItem('blacklist_cart')) || [];
     let orderCart = JSON.parse(sessionStorage.getItem('order_cart')) || [];
+    let data2 = JSON.parse(sessionStorage.getItem('data2')) || [];
     let subtotal = document.getElementById('subtotal').innerText;
     let pn = document.getElementById('phoneSmall').value;
     let cn = document.getElementById('nameSmall').value;
     let ce = document.getElementById('emailSmall').value;
     const phoneExists = contactmaster_cart.find(row => String(row[3]) === String(pn));
+
+    items.forEach(item => {
+      let foundEntries = data2.filter(entry => entry[1] === item.itemName); // Find all matches
+  
+      if (foundEntries.length > 0) {
+          console.log("Matches found:", foundEntries);
+  
+          foundEntries.forEach(entry => {
+              if (entry[6] === "PIECES") {  // Check if unit is "PIECES"
+                  entry[5] = Math.max(0, entry[5] - item.quantity); // Reduce quantity (ensure it doesn't go below 0)
+              }
+              else if (entry[6] === "LITERS") {  
+                entry[5] = Math.max(0, entry[5] - (item.quantity*0.50)); // Reduce quantity (ensure it doesn't go below 0)
+            }
+          });
+  
+          console.log("Updated Entries:", foundEntries);
+          sessionStorage.setItem('data2', JSON.stringify(data2));
+      }
+    });
+  
 
     if (!phoneExists) {
       // Get new row values from the input fields

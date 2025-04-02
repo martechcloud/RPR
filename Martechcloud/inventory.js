@@ -20,7 +20,6 @@ function fetchDataAndStoreInCart() {
     var MartechDataPass = sessionStorage.getItem('MartechDataPass'); 
     const decryptedUrl = decryptURL(encryptedUrl, MartechDataPass);
 
-
     fetch(decryptedUrl)
         .then(response => response.json())
         .then(data => {
@@ -95,8 +94,9 @@ async function updateQuantity(productId) {
 
     let currentqtyValue = sessionStorage.getItem('currentqtyValue');
     console.log(currentqtyValue);
+    console.log(qtyInput.value)
 
-    if (qtyInput.value < currentqtyValue) {
+    if (Number(qtyInput.value) < Number(currentqtyValue)) {
         alertMessagered.textContent = "Quantity can not be reduced";
         showError(errorMessage, submitButton);
         return;
@@ -135,7 +135,8 @@ async function updateQuantity(productId) {
 
     if (index !== -1) {
         data2[index][5] = newQty;
-    }  
+    } 
+    sessionStorage.setItem('data2', JSON.stringify(data2));
 }
 
 document.getElementById('refreshButton').addEventListener('click', function() {
@@ -190,6 +191,7 @@ function handleResponse2(response, submitButton) {
 
     if (response.status === "success") {
         alertMessagegreen.textContent = "Quantity Updated!";
+        sessionStorage.removeItem('currentqtyValue');
         successMessage.style.display = "block";
         setTimeout(() => {
             successMessage.style.display = "none";
